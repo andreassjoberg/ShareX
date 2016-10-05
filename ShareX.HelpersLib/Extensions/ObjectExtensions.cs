@@ -23,7 +23,7 @@
 
 #endregion License Information (GPL v3)
 
-// https://github.com/Burtsev-Alexey/net-object-deep-copy
+// Credits: https://github.com/Burtsev-Alexey/net-object-deep-copy
 
 using System;
 using System.Collections.Generic;
@@ -37,7 +37,7 @@ namespace ShareX.HelpersLib
 
         public static bool IsPrimitive(this Type type)
         {
-            if (type == typeof(String)) return true;
+            if (type == typeof(string)) return true;
             return type.IsValueType & type.IsPrimitive;
         }
 

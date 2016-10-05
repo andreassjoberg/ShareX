@@ -141,14 +141,36 @@ namespace ShareX.HelpersLib
             {
                 ListViewItem lvi = lvMain.SelectedItems[0];
                 TabPage tabPage = lvi.Tag as TabPage;
+                LoadTabPage(tabPage);
+            }
+        }
 
-                if (tabPage != null && !tcMain.TabPages.Contains(tabPage))
+        private void LoadTabPage(TabPage tabPage)
+        {
+            if (tabPage != null && !tcMain.TabPages.Contains(tabPage))
+            {
+                tcMain.TabPages.Clear();
+                tcMain.TabPages.Add(tabPage);
+                // Need to set ImageKey again otherwise icon not show up
+                tabPage.ImageKey = tabPage.ImageKey;
+                tabPage.Refresh();
+                lvMain.Focus();
+            }
+        }
+
+        public void NavigateToTabPage(TabPage tabPage)
+        {
+            if (tabPage != null)
+            {
+                foreach (ListViewItem lvi in lvMain.Items)
                 {
-                    tcMain.TabPages.Clear();
-                    tcMain.TabPages.Add(tabPage);
-                    // Need to set ImageKey again otherwise icon not show up
-                    tabPage.ImageKey = lvi.ImageKey;
-                    lvMain.Focus();
+                    TabPage currentTabPage = lvi.Tag as TabPage;
+
+                    if (currentTabPage == tabPage)
+                    {
+                        lvi.Selected = true;
+                        return;
+                    }
                 }
             }
         }

@@ -24,13 +24,41 @@
 #endregion License Information (GPL v3)
 
 using Newtonsoft.Json;
-using ShareX.UploadersLib.HelperClasses;
+using ShareX.HelpersLib;
+using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.ImageUploaders
 {
+    public class TwitterImageUploaderService : ImageUploaderService
+    {
+        public override ImageDestination EnumValue { get; } = ImageDestination.Twitter;
+
+        public override Icon ServiceIcon => Resources.Twitter;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return config.TwitterOAuthInfoList != null && config.TwitterOAuthInfoList.IsValidIndex(config.TwitterSelectedAccount) &&
+                OAuthInfo.CheckOAuth(config.TwitterOAuthInfoList[config.TwitterSelectedAccount]);
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            OAuthInfo twitterOAuth = config.TwitterOAuthInfoList.ReturnIfValidIndex(config.TwitterSelectedAccount);
+
+            return new Twitter(twitterOAuth)
+            {
+                SkipMessageBox = config.TwitterSkipMessageBox,
+                DefaultMessage = config.TwitterDefaultMessage ?? ""
+            };
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpTwitter;
+    }
+
     public class Twitter : ImageUploader, IOAuth
     {
         private const string APIVersion = "1.1";

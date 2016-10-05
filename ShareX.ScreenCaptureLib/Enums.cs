@@ -37,22 +37,33 @@ namespace ShareX.ScreenCaptureLib
 
     public enum ScreenRecordGIFEncoding // Localized
     {
-        [Description("FFmpeg")]
         FFmpeg,
-        [Description(".NET")]
         NET,
-        [Description("Octree quantizer")]
         OctreeQuantizer
     }
 
-    public enum SurfaceResult
+    public enum RegionResult
     {
-        None,
         Close,
         Region,
         Fullscreen,
         Monitor,
-        ActiveMonitor
+        ActiveMonitor,
+        AnnotateRunAfterCaptureTasks,
+        AnnotateSaveImage,
+        AnnotateSaveImageAs,
+        AnnotateCopyImage,
+        AnnotateUploadImage,
+        AnnotatePrintImage
+    }
+
+    public enum NodeType
+    {
+        None,
+        Rectangle,
+        Line,
+        Point,
+        Freehand
     }
 
     internal enum NodePosition
@@ -64,7 +75,8 @@ namespace ShareX.ScreenCaptureLib
         BottomRight,
         Bottom,
         BottomLeft,
-        Left
+        Left,
+        Extra
     }
 
     internal enum NodeShape
@@ -138,13 +150,54 @@ namespace ShareX.ScreenCaptureLib
         sierra2_4a
     }
 
-    public enum RegionShape
+    public enum RegionCaptureMode
     {
-        Rectangle,
-        RoundedRectangle,
-        Ellipse,
-        Triangle,
-        Diamond
+        Default,
+        Annotation,
+        ScreenColorPicker,
+        Ruler,
+        OneClick,
+        Editor
+    }
+
+    public enum RegionCaptureAction // Localized
+    {
+        None,
+        CancelCapture,
+        RemoveShapeCancelCapture,
+        RemoveShape,
+        OpenOptionsMenu,
+        SwapToolType,
+        CaptureFullscreen,
+        CaptureActiveMonitor
+    }
+
+    public enum ShapeCategory
+    {
+        Region,
+        Drawing,
+        Effect
+    }
+
+    public enum ShapeType // Localized
+    {
+        RegionRectangle,
+        RegionRoundedRectangle,
+        RegionEllipse,
+        RegionFreehand,
+        DrawingRectangle,
+        DrawingRoundedRectangle,
+        DrawingEllipse,
+        DrawingFreehand,
+        DrawingLine,
+        DrawingArrow,
+        DrawingText,
+        DrawingSpeechBalloon,
+        DrawingStep,
+        DrawingImage,
+        EffectBlur,
+        EffectPixelate,
+        EffectHighlight
     }
 
     public enum RegionAnnotateMode
@@ -154,27 +207,19 @@ namespace ShareX.ScreenCaptureLib
         Pen
     }
 
-    public enum ScrollingCaptureScrollMethod
+    public enum ScrollingCaptureScrollMethod // Localized
     {
-        [Description("Automatically try all methods until one works")]
         Automatic,
-        [Description("Send scroll message to window or control")]
         SendMessageScroll,
-        [Description("Simulate pressing \"Page down\" key")]
         KeyPressPageDown,
-        [Description("Simulate mouse wheel scrolling")]
         MouseWheel
     }
 
-    public enum ScrollingCaptureScrollTopMethod
+    public enum ScrollingCaptureScrollTopMethod // Localized
     {
-        [Description("First simulate pressing \"Home\" key then send scroll top message")]
         All,
-        [Description("Send scroll top message")]
         SendMessageTop,
-        [Description("Simulate pressing \"Home\" key")]
         KeyPressHome,
-        [Description("Disable scrolling to top")]
         None
     }
 }

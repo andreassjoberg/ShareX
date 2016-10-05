@@ -76,7 +76,7 @@ namespace ShareX.HelpersLib
 
         public static Rectangle GetScreenBounds4()
         {
-            return Screen.AllScreens.Aggregate(Rectangle.Empty, (current, screen) => Rectangle.Union(current, screen.Bounds));
+            return Screen.AllScreens.Select(x => x.Bounds).Combine();
         }
 
         public static Rectangle GetActiveScreenBounds()
@@ -221,28 +221,6 @@ namespace ShareX.HelpersLib
             return CreateRectangle(pos.X, pos.Y, pos2.X, pos2.Y);
         }
 
-        public static Rectangle FixRectangle(int x, int y, int width, int height)
-        {
-            if (width < 0)
-            {
-                x += width;
-                width = -width;
-            }
-
-            if (height < 0)
-            {
-                y += height;
-                height = -height;
-            }
-
-            return new Rectangle(x, y, width, height);
-        }
-
-        public static Rectangle FixRectangle(Rectangle rect)
-        {
-            return FixRectangle(rect.X, rect.Y, rect.Width, rect.Height);
-        }
-
         public static Point ProportionalPosition(Point pos, Point pos2)
         {
             Point newPosition = Point.Empty;
@@ -280,6 +258,16 @@ namespace ShareX.HelpersLib
             }
 
             return newPosition;
+        }
+
+        public static Point SnapPositionToDegree(Point pos, Point pos2, float degree, float startDegree)
+        {
+            float angle = MathHelpers.LookAtRadian(pos, pos2);
+            float startAngle = MathHelpers.DegreeToRadian(startDegree);
+            float snapAngle = MathHelpers.DegreeToRadian(degree);
+            float newAngle = (float)Math.Round((angle + startAngle) / snapAngle) * snapAngle - startAngle;
+            float distance = MathHelpers.Distance(pos, pos2);
+            return (Point)(pos + MathHelpers.RadianToVector2(newAngle, distance));
         }
 
         public static Point CalculateNewPosition(Point posOnClick, Point posCurrent, Size size)

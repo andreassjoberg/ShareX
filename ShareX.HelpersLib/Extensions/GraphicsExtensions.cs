@@ -55,21 +55,29 @@ namespace ShareX.HelpersLib
             {
                 int currentAlpha = (int)MathHelpers.Lerp(shadowMaxAlpha, shadowMinAlpha, (float)i / (shadowDepth - 1));
 
-                using (Pen pen = new Pen(Color.FromArgb(currentAlpha, shadowColor)))
+                if (currentAlpha > 0)
                 {
-                    Rectangle shadowRect = new Rectangle(rect.X + -shadowDirection.Left * i, rect.Y + -shadowDirection.Top * i,
-                        rect.Width + (shadowDirection.Left + shadowDirection.Right) * i, rect.Height + (shadowDirection.Top + shadowDirection.Bottom) * i);
+                    using (Pen pen = new Pen(Color.FromArgb(currentAlpha, shadowColor)))
+                    {
+                        Rectangle shadowRect = new Rectangle(rect.X + -shadowDirection.Left * i, rect.Y + -shadowDirection.Top * i,
+                            rect.Width + (shadowDirection.Left + shadowDirection.Right) * i, rect.Height + (shadowDirection.Top + shadowDirection.Bottom) * i);
 
-                    g.DrawRectangleProper(pen, shadowRect);
+                        g.DrawRectangleProper(pen, shadowRect);
+                    }
                 }
             }
+        }
+
+        public static void DrawRoundedRectangle(this Graphics g, Pen pen, Rectangle rect, float radius)
+        {
+            g.DrawRoundedRectangle(null, pen, rect, radius);
         }
 
         public static void DrawRoundedRectangle(this Graphics g, Brush brush, Pen pen, Rectangle rect, float radius)
         {
             using (GraphicsPath gp = new GraphicsPath())
             {
-                gp.AddRoundedRectangle(rect, radius);
+                gp.AddRoundedRectangleProper(rect, radius);
                 if (brush != null) g.FillPath(brush, gp);
                 if (pen != null) g.DrawPath(pen, gp);
             }
@@ -106,6 +114,49 @@ namespace ShareX.HelpersLib
 
                 // Left
                 g.DrawLine(pen, rect.X, rect.Y - crossSize, rect.X, rect.Bottom + crossSize);
+            }
+        }
+
+        public static void DrawCornerLines(this Graphics g, Rectangle rect, Pen pen, int lineSize)
+        {
+            if (rect.Width <= lineSize * 2)
+            {
+                g.DrawLine(pen, rect.X, rect.Y, rect.Right - 1, rect.Y);
+                g.DrawLine(pen, rect.X, rect.Bottom - 1, rect.Right - 1, rect.Bottom - 1);
+            }
+            else
+            {
+                // Top left
+                g.DrawLine(pen, rect.X, rect.Y, rect.X + lineSize, rect.Y);
+
+                // Top right
+                g.DrawLine(pen, rect.Right - 1, rect.Y, rect.Right - 1 - lineSize, rect.Y);
+
+                // Bottom left
+                g.DrawLine(pen, rect.X, rect.Bottom - 1, rect.X + lineSize, rect.Bottom - 1);
+
+                // Bottom right
+                g.DrawLine(pen, rect.Right - 1, rect.Bottom - 1, rect.Right - 1 - lineSize, rect.Bottom - 1);
+            }
+
+            if (rect.Height <= lineSize * 2)
+            {
+                g.DrawLine(pen, rect.X, rect.Y, rect.X, rect.Bottom - 1);
+                g.DrawLine(pen, rect.Right - 1, rect.Y, rect.Right - 1, rect.Bottom - 1);
+            }
+            else
+            {
+                // Top left
+                g.DrawLine(pen, rect.X, rect.Y, rect.X, rect.Y + lineSize);
+
+                // Top right
+                g.DrawLine(pen, rect.Right - 1, rect.Y, rect.Right - 1, rect.Y + lineSize);
+
+                // Bottom left
+                g.DrawLine(pen, rect.X, rect.Bottom - 1, rect.X, rect.Bottom - 1 - lineSize);
+
+                // Bottom right
+                g.DrawLine(pen, rect.Right - 1, rect.Bottom - 1, rect.Right - 1, rect.Bottom - 1 - lineSize);
             }
         }
 

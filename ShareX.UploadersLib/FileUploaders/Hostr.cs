@@ -24,11 +24,36 @@
 #endregion License Information (GPL v3)
 
 using Newtonsoft.Json;
+using ShareX.UploadersLib.Properties;
 using System.Collections.Specialized;
+using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class HostrFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.Localhostr;
+
+        public override Icon ServiceIcon => Resources.Hostr;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return !string.IsNullOrEmpty(config.LocalhostrEmail) && !string.IsNullOrEmpty(config.LocalhostrPassword);
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new Hostr(config.LocalhostrEmail, config.LocalhostrPassword)
+            {
+                DirectURL = config.LocalhostrDirectURL
+            };
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpHostr;
+    }
+
     public sealed class Hostr : FileUploader
     {
         public string Email { get; set; }

@@ -74,6 +74,7 @@ namespace ShareX
         TextUpload,
         ShortenURL,
         ShareURL,
+        Download,
         DownloadUpload
     }
 
@@ -83,27 +84,31 @@ namespace ShareX
         Preparing,
         Working,
         Stopping,
-        Completed
+        Completed,
+        History
     }
 
     [Flags]
     public enum AfterCaptureTasks // Localized
     {
         None = 0,
-        ShowAfterCaptureWindow = 1,
-        AddImageEffects = 1 << 1,
-        AnnotateImage = 1 << 2,
-        CopyImageToClipboard = 1 << 3,
-        SendImageToPrinter = 1 << 4,
-        SaveImageToFile = 1 << 5,
-        SaveImageToFileWithDialog = 1 << 6,
-        SaveThumbnailImageToFile = 1 << 7,
-        PerformActions = 1 << 8,
-        CopyFileToClipboard = 1 << 9,
-        CopyFilePathToClipboard = 1 << 10,
-        ShowBeforeUploadWindow = 1 << 11,
-        UploadImageToHost = 1 << 12,
-        DeleteFile = 1 << 13
+        ShowQuickTaskMenu = 1,
+        ShowAfterCaptureWindow = 1 << 1,
+        AddImageEffects = 1 << 2,
+        AnnotateImage = 1 << 3,
+        CopyImageToClipboard = 1 << 4,
+        SendImageToPrinter = 1 << 5,
+        SaveImageToFile = 1 << 6,
+        SaveImageToFileWithDialog = 1 << 7,
+        SaveThumbnailImageToFile = 1 << 8,
+        PerformActions = 1 << 9,
+        CopyFileToClipboard = 1 << 10,
+        CopyFilePathToClipboard = 1 << 11,
+        ShowInExplorer = 1 << 12,
+        DoOCR = 1 << 13,
+        ShowBeforeUploadWindow = 1 << 14,
+        UploadImageToHost = 1 << 15,
+        DeleteFile = 1 << 16
     }
 
     [Flags]
@@ -120,14 +125,12 @@ namespace ShareX
 
     public enum CaptureType
     {
-        Screen,
+        Fullscreen,
         Monitor,
         ActiveMonitor,
         Window,
         ActiveWindow,
-        Rectangle,
-        Polygon,
-        Freehand,
+        Region,
         CustomRegion,
         LastRegion
     }
@@ -136,6 +139,7 @@ namespace ShareX
     {
         Region,
         ActiveWindow,
+        CustomRegion,
         LastRegion
     }
 
@@ -156,24 +160,25 @@ namespace ShareX
         ActiveWindow,
         ActiveMonitor,
         RectangleRegion,
-        RectangleAnnotate,
         RectangleLight,
         RectangleTransparent,
-        PolygonRegion,
-        FreeHandRegion,
         CustomRegion,
         LastRegion,
         ScrollingCapture,
         CaptureWebpage,
+        TextCapture,
         AutoCapture,
         StartAutoCapture,
         // Screen record
         ScreenRecorder,
         ScreenRecorderActiveWindow,
+        ScreenRecorderCustomRegion,
         StartScreenRecorder,
         ScreenRecorderGIF,
         ScreenRecorderGIFActiveWindow,
+        ScreenRecorderGIFCustomRegion,
         StartScreenRecorderGIF,
+        AbortScreenRecording,
         // Tools
         ColorPicker,
         ScreenColorPicker,
@@ -192,7 +197,10 @@ namespace ShareX
         MonitorTest,
         // Other
         DisableHotkeys,
-        OpenScreenshotsFolder
+        OpenMainWindow,
+        OpenScreenshotsFolder,
+        OpenHistory,
+        OpenImageHistory
     }
 
     public enum HotkeyStatus

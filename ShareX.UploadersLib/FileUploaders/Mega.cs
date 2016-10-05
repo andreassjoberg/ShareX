@@ -26,26 +26,47 @@
 // Credits: https://github.com/gpailler
 
 using CG.Web.MegaApiClient;
+using ShareX.UploadersLib.Properties;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class MegaFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.Mega;
+
+        public override Icon ServiceIcon => Resources.Mega;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return config.MegaAuthInfos != null && config.MegaAuthInfos.Email != null && config.MegaAuthInfos.Hash != null &&
+                config.MegaAuthInfos.PasswordAesKey != null;
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new Mega(config.MegaAuthInfos, config.MegaParentNodeId);
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpMega;
+    }
+
     public sealed class Mega : FileUploader, IWebClient
     {
         private readonly MegaApiClient _megaClient;
         private readonly MegaApiClient.AuthInfos _authInfos;
         private readonly string _parentNodeId;
 
-        public Mega()
-            : this(null, null)
+        public Mega() : this(null, null)
         {
         }
 
-        public Mega(MegaApiClient.AuthInfos authInfos)
-            : this(authInfos, null)
+        public Mega(MegaApiClient.AuthInfos authInfos) : this(authInfos, null)
         {
         }
 

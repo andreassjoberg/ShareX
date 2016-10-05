@@ -25,10 +25,35 @@
 
 // Credits: https://github.com/DanielMcAssey
 
+using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.URLShorteners
 {
+    public class CoinURLShortenerService : URLShortenerService
+    {
+        public override UrlShortenerType EnumValue { get; } = UrlShortenerType.CoinURL;
+
+        public override Icon ServiceIcon => Resources.CoinURL;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return !string.IsNullOrEmpty(config.CoinURLUUID);
+        }
+
+        public override URLShortener CreateShortener(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new CoinURLShortener
+            {
+                UUID = config.CoinURLUUID
+            };
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpCoinURL;
+    }
+
     public sealed class CoinURLShortener : URLShortener
     {
         private const string API_ENDPOINT = "https://coinurl.com/api.php";

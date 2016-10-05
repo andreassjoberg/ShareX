@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ShareX.HelpersLib
@@ -38,28 +39,28 @@ namespace ShareX.HelpersLib
 
         public static string Left(this string str, int length)
         {
-            if (length < 1) return string.Empty;
+            if (length < 1) return "";
             if (length < str.Length) return str.Substring(0, length);
             return str;
         }
 
         public static string Right(this string str, int length)
         {
-            if (length < 1) return string.Empty;
+            if (length < 1) return "";
             if (length < str.Length) return str.Substring(str.Length - length);
             return str;
         }
 
         public static string RemoveLeft(this string str, int length)
         {
-            if (length < 1) return string.Empty;
+            if (length < 1) return "";
             if (length < str.Length) return str.Remove(0, length);
             return str;
         }
 
         public static string RemoveRight(this string str, int length)
         {
-            if (length < 1) return string.Empty;
+            if (length < 1) return "";
             if (length < str.Length) return str.Remove(str.Length - length);
             return str;
         }
@@ -168,21 +169,14 @@ namespace ShareX.HelpersLib
 
         public static string RemoveWhiteSpaces(this string str)
         {
-            StringBuilder result = new StringBuilder();
-
-            foreach (char c in str)
-            {
-                if (!Char.IsWhiteSpace(c)) result.Append(c);
-            }
-
-            return result.ToString();
+            return new string(str.Where(c => !char.IsWhiteSpace(c)).ToArray());
         }
 
         public static string Reverse(this string str)
         {
             char[] chars = str.ToCharArray();
             Array.Reverse(chars);
-            return new String(chars);
+            return new string(chars);
         }
 
         public static string Truncate(this string str, int maxLength)
@@ -260,12 +254,8 @@ namespace ShareX.HelpersLib
 
         public static bool IsNumber(this string text)
         {
-            foreach (char c in text)
-            {
-                if (!char.IsNumber(c)) return false;
-            }
-
-            return true;
+            int num;
+            return int.TryParse(text, out num);
         }
 
         public static string[] Lines(this string text)

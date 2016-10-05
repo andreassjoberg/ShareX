@@ -483,9 +483,6 @@
   <data name="tsmiQRCode.Text" xml:space="preserve">
     <value>QR код…</value>
   </data>
-  <data name="tsmiPolygon.Text" xml:space="preserve">
-    <value>Многоугольник</value>
-  </data>
   <data name="tsmiRuler.Text" xml:space="preserve">
     <value>Линейка…</value>
   </data>
@@ -525,9 +522,6 @@
   <data name="tsmiTrayIndexFolder.Text" xml:space="preserve">
     <value>Индексация папки…</value>
   </data>
-  <data name="tsmiTrayPolygon.Text" xml:space="preserve">
-    <value>Многоугольник</value>
-  </data>
   <data name="tsmiTrayQRCode.Text" xml:space="preserve">
     <value>QR код…</value>
   </data>
@@ -557,18 +551,6 @@
   </data>
   <data name="tsmiTrayVideoThumbnailer.Text" xml:space="preserve">
     <value>Миниатюры из видео…</value>
-  </data>
-  <data name="tsmiRectangleAnnotate.Text" xml:space="preserve">
-    <value>Область (Примечания)</value>
-  </data>
-  <data name="tsmiTrayRectangleAnnotate.Text" xml:space="preserve">
-    <value>Область (Примечания)</value>
-  </data>
-  <data name="tsmiFreeHand.Text" xml:space="preserve">
-    <value>Область произвольной формы</value>
-  </data>
-  <data name="tsmiTrayFreeHand.Text" xml:space="preserve">
-    <value>Область произвольной формы</value>
   </data>
   <data name="tsmiRectangleLight.Text" xml:space="preserve">
     <value>Область (Облегченный)</value>
@@ -656,5 +638,26 @@
   </data>
   <data name="tsmiTrayTestURLSharing.Text" xml:space="preserve">
     <value>Проверить отправку ссылки</value>
+  </data>
+  <data name="tsmiHideColumns.Text" xml:space="preserve">
+    <value>Скрыть столбцы</value>
+  </data>
+  <data name="pbTips.ToolTip" xml:space="preserve">
+    <value>Показать подсказки и горячие клавиши</value>
+  </data>
+  <data name="pbPatreonOpen.ToolTip" xml:space="preserve">
+    <value>Открыть веб-страницу Patreon-кампании ShareX</value>
+  </data>
+  <data name="pbPatreonHide.ToolTip" xml:space="preserve">
+    <value>Навсегда спрятать кнопку Patreon</value>
+  </data>
+  <data name="tsmiTrayTextCapture.Text" xml:space="preserve">
+    <value>Захват текста (OCR)...</value>
+  </data>
+  <data name="tsmiTextCapture.Text" xml:space="preserve">
+    <value>Захват текста (OCR)...</value>
+  </data>
+  <data name="tsmiDownloadSelectedURL.Text" xml:space="preserve">
+    <value>Скачать</value>
   </data>
 </root>

@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AfterCaptureForm));
             this.btnContinue = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.pbImage = new ShareX.HelpersLib.MyPictureBox();
             this.btnCopy = new System.Windows.Forms.Button();
             this.tcTasks = new System.Windows.Forms.TabControl();
             this.tpAfterCapture = new System.Windows.Forms.TabPage();
@@ -43,7 +42,7 @@
             this.chAfterUpload = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.lblFileName = new System.Windows.Forms.Label();
             this.txtFileName = new System.Windows.Forms.TextBox();
-            this.lblImageSize = new System.Windows.Forms.Label();
+            this.pbImage = new ShareX.HelpersLib.MyPictureBox();
             this.ucBeforeUpload = new ShareX.BeforeUploadControl();
             this.tcTasks.SuspendLayout();
             this.tpAfterCapture.SuspendLayout();
@@ -65,17 +64,6 @@
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // pbImage
-            // 
-            resources.ApplyResources(this.pbImage, "pbImage");
-            this.pbImage.BackColor = System.Drawing.Color.White;
-            this.pbImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbImage.Cursor = System.Windows.Forms.Cursors.Default;
-            this.pbImage.DrawCheckeredBackground = true;
-            this.pbImage.EnableRightClickMenu = true;
-            this.pbImage.FullscreenOnClick = true;
-            this.pbImage.Name = "pbImage";
             // 
             // btnCopy
             // 
@@ -112,7 +100,6 @@
             this.lvAfterCaptureTasks.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvAfterCaptureTasks.MultiSelect = false;
             this.lvAfterCaptureTasks.Name = "lvAfterCaptureTasks";
-            this.lvAfterCaptureTasks.Scrollable = false;
             this.lvAfterCaptureTasks.UseCompatibleStateImageBehavior = false;
             this.lvAfterCaptureTasks.View = System.Windows.Forms.View.Details;
             this.lvAfterCaptureTasks.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvAfterCaptureTasks_ItemSelectionChanged);
@@ -143,7 +130,6 @@
             this.lvAfterUploadTasks.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.lvAfterUploadTasks.MultiSelect = false;
             this.lvAfterUploadTasks.Name = "lvAfterUploadTasks";
-            this.lvAfterUploadTasks.Scrollable = false;
             this.lvAfterUploadTasks.UseCompatibleStateImageBehavior = false;
             this.lvAfterUploadTasks.View = System.Windows.Forms.View.Details;
             this.lvAfterUploadTasks.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvAfterUploadTasks_ItemSelectionChanged);
@@ -159,12 +145,17 @@
             resources.ApplyResources(this.txtFileName, "txtFileName");
             this.txtFileName.Name = "txtFileName";
             // 
-            // lblImageSize
+            // pbImage
             // 
-            resources.ApplyResources(this.lblImageSize, "lblImageSize");
-            this.lblImageSize.BackColor = System.Drawing.Color.White;
-            this.lblImageSize.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblImageSize.Name = "lblImageSize";
+            resources.ApplyResources(this.pbImage, "pbImage");
+            this.pbImage.BackColor = System.Drawing.SystemColors.Window;
+            this.pbImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbImage.Cursor = System.Windows.Forms.Cursors.Default;
+            this.pbImage.DrawCheckeredBackground = true;
+            this.pbImage.EnableRightClickMenu = true;
+            this.pbImage.FullscreenOnClick = true;
+            this.pbImage.Name = "pbImage";
+            this.pbImage.ShowImageSizeLabel = true;
             // 
             // ucBeforeUpload
             // 
@@ -176,8 +167,8 @@
             this.AcceptButton = this.btnContinue;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.CancelButton = this.btnCancel;
-            this.Controls.Add(this.lblImageSize);
             this.Controls.Add(this.txtFileName);
             this.Controls.Add(this.lblFileName);
             this.Controls.Add(this.tcTasks);
@@ -188,6 +179,7 @@
             this.Name = "AfterCaptureForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.TopMost = true;
+            this.Shown += new System.EventHandler(this.AfterCaptureForm_Shown);
             this.tcTasks.ResumeLayout(false);
             this.tpAfterCapture.ResumeLayout(false);
             this.tpBeforeUpload.ResumeLayout(false);
@@ -214,6 +206,5 @@
         private System.Windows.Forms.ColumnHeader chAfterCapture;
         private HelpersLib.MyListView lvAfterUploadTasks;
         private System.Windows.Forms.ColumnHeader chAfterUpload;
-        private System.Windows.Forms.Label lblImageSize;
     }
 }

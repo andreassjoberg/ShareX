@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareX", "ShareX\ShareX.csproj", "{C5AE4585-E9EC-4FA3-B75A-E1210635ACB6}"
 EndProject
@@ -29,6 +29,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareX.Setup", "ShareX.Setup\ShareX.Setup.csproj", "{3D19A94A-7A58-4451-A686-EE70B471C206}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareX.MediaLib", "ShareX.MediaLib\ShareX.MediaLib.csproj", "{1A190E53-1419-4CC2-B0E5-3BC7EA861C8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareX.Steam", "ShareX.Steam\ShareX.Steam.csproj", "{7F6ADFC5-2563-4A5F-B202-93B553578719}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareX.Chrome", "ShareX.Chrome\ShareX.Chrome.csproj", "{254E398D-F7F5-4B2A-9024-5C121EA6C564}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -86,14 +90,29 @@ Global
 		{D13441B6-96E1-4D1B-8A95-58A7D6CB1E24}.Steam|Any CPU.ActiveCfg = Steam|Any CPU
 		{D13441B6-96E1-4D1B-8A95-58A7D6CB1E24}.Steam|Any CPU.Build.0 = Steam|Any CPU
 		{3D19A94A-7A58-4451-A686-EE70B471C206}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D19A94A-7A58-4451-A686-EE70B471C206}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D19A94A-7A58-4451-A686-EE70B471C206}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D19A94A-7A58-4451-A686-EE70B471C206}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3D19A94A-7A58-4451-A686-EE70B471C206}.Steam|Any CPU.ActiveCfg = Steam|Any CPU
+		{3D19A94A-7A58-4451-A686-EE70B471C206}.Steam|Any CPU.Build.0 = Steam|Any CPU
 		{1A190E53-1419-4CC2-B0E5-3BC7EA861C8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1A190E53-1419-4CC2-B0E5-3BC7EA861C8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A190E53-1419-4CC2-B0E5-3BC7EA861C8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A190E53-1419-4CC2-B0E5-3BC7EA861C8B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A190E53-1419-4CC2-B0E5-3BC7EA861C8B}.Steam|Any CPU.ActiveCfg = Steam|Any CPU
 		{1A190E53-1419-4CC2-B0E5-3BC7EA861C8B}.Steam|Any CPU.Build.0 = Steam|Any CPU
+		{7F6ADFC5-2563-4A5F-B202-93B553578719}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F6ADFC5-2563-4A5F-B202-93B553578719}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F6ADFC5-2563-4A5F-B202-93B553578719}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F6ADFC5-2563-4A5F-B202-93B553578719}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F6ADFC5-2563-4A5F-B202-93B553578719}.Steam|Any CPU.ActiveCfg = Release|Any CPU
+		{7F6ADFC5-2563-4A5F-B202-93B553578719}.Steam|Any CPU.Build.0 = Release|Any CPU
+		{254E398D-F7F5-4B2A-9024-5C121EA6C564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{254E398D-F7F5-4B2A-9024-5C121EA6C564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{254E398D-F7F5-4B2A-9024-5C121EA6C564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{254E398D-F7F5-4B2A-9024-5C121EA6C564}.Release|Any CPU.Build.0 = Release|Any CPU
+		{254E398D-F7F5-4B2A-9024-5C121EA6C564}.Steam|Any CPU.ActiveCfg = Release|Any CPU
+		{254E398D-F7F5-4B2A-9024-5C121EA6C564}.Steam|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

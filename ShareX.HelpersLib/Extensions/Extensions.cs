@@ -141,9 +141,29 @@ namespace ShareX.HelpersLib
             return rect.Width > 0 && rect.Height > 0;
         }
 
+        public static Point Add(this Point point, int offset)
+        {
+            return point.Add(offset, offset);
+        }
+
+        public static Point Add(this Point point, int offsetX, int offsetY)
+        {
+            return new Point(point.X + offsetX, point.Y + offsetY);
+        }
+
+        public static Point Add(this Point point, Point offset)
+        {
+            return new Point(point.X + offset.X, point.Y + offset.Y);
+        }
+
         public static Size Offset(this Size size, int offset)
         {
-            return new Size(size.Width + offset, size.Height + offset);
+            return size.Offset(offset, offset);
+        }
+
+        public static Size Offset(this Size size, int width, int height)
+        {
+            return new Size(size.Width + width, size.Height + height);
         }
 
         public static Rectangle Offset(this Rectangle rect, int offset)
@@ -154,6 +174,11 @@ namespace ShareX.HelpersLib
         public static Rectangle LocationOffset(this Rectangle rect, int x, int y)
         {
             return new Rectangle(rect.X + x, rect.Y + y, rect.Width, rect.Height);
+        }
+
+        public static Rectangle LocationOffset(this Rectangle rect, Point offset)
+        {
+            return rect.LocationOffset(offset.X, offset.Y);
         }
 
         public static Rectangle LocationOffset(this Rectangle rect, int offset)
@@ -281,7 +306,7 @@ namespace ShareX.HelpersLib
         {
             ToolStrip parent = tsmi.GetCurrentParent();
 
-            foreach (ToolStripMenuItem tsmiParent in parent.Items)
+            foreach (ToolStripMenuItem tsmiParent in parent.Items.OfType<ToolStripMenuItem>())
             {
                 if (tsmiParent != tsmi)
                 {
@@ -290,6 +315,21 @@ namespace ShareX.HelpersLib
             }
 
             tsmi.Checked = true;
+        }
+
+        public static void RadioCheck(this ToolStripButton tsb)
+        {
+            ToolStrip parent = tsb.GetCurrentParent();
+
+            foreach (ToolStripButton tsbParent in parent.Items.OfType<ToolStripButton>())
+            {
+                if (tsbParent != tsb)
+                {
+                    tsbParent.Checked = false;
+                }
+            }
+
+            tsb.Checked = true;
         }
 
         public static void InvokeSafe(this Control control, Action action)
@@ -307,7 +347,7 @@ namespace ShareX.HelpersLib
             }
         }
 
-        public static void ShowActivate(this Form form)
+        public static void ForceActivate(this Form form)
         {
             if (!form.Visible)
             {
@@ -456,13 +496,89 @@ namespace ShareX.HelpersLib
         {
             if (textBox != null && textBox.IsHandleCreated && watermarkText != null)
             {
-                NativeMethods.SendMessage(textBox.Handle, (int)NativeMethods.EM_SETCUEBANNER, showCueWhenFocus ? 1 : 0, watermarkText);
+                NativeMethods.SendMessage(textBox.Handle, (int)NativeConstants.EM_SETCUEBANNER, showCueWhenFocus ? 1 : 0, watermarkText);
             }
         }
 
         public static void HideImageMargin(this ToolStripDropDownItem tsddi)
         {
             ((ToolStripDropDownMenu)tsddi.DropDown).ShowImageMargin = false;
+        }
+
+        public static void SetValue(this NumericUpDown nud, decimal number)
+        {
+            nud.Value = number.Between(nud.Minimum, nud.Maximum);
+        }
+
+        public static bool IsValidImage(this PictureBox pb)
+        {
+            return pb.Image != null && pb.Image != pb.InitialImage && pb.Image != pb.ErrorImage;
+        }
+
+        public static void IgnoreSeparatorClick(this ContextMenuStrip cms)
+        {
+            bool cancelClose = false;
+
+            cms.ItemClicked += (sender, e) =>
+            {
+                cancelClose = e.ClickedItem is ToolStripSeparator;
+            };
+
+            cms.Closing += (sender, e) =>
+            {
+                if (e.CloseReason == ToolStripDropDownCloseReason.ItemClicked && cancelClose)
+                {
+                    e.Cancel = true;
+                }
+            };
+        }
+
+        public static Rectangle Combine(this IEnumerable<Rectangle> rects)
+        {
+            Rectangle result = Rectangle.Empty;
+
+            foreach (Rectangle rect in rects)
+            {
+                if (result.IsEmpty)
+                {
+                    result = rect;
+                }
+                else
+                {
+                    result = Rectangle.Union(result, rect);
+                }
+            }
+
+            return result;
+        }
+
+        public static Rectangle AddPoint(this Rectangle rect, Point point)
+        {
+            return Rectangle.Union(rect, new Rectangle(point, new Size(1, 1)));
+        }
+
+        public static Rectangle CreateRectangle(this IEnumerable<Point> points)
+        {
+            Rectangle result = Rectangle.Empty;
+
+            foreach (Point point in points)
+            {
+                if (result.IsEmpty)
+                {
+                    result = new Rectangle(point, new Size(1, 1));
+                }
+                else
+                {
+                    result = result.AddPoint(point);
+                }
+            }
+
+            return result;
+        }
+
+        public static Point Center(this Rectangle rect)
+        {
+            return new Point(rect.X + rect.Width / 2, rect.Y + rect.Height / 2);
         }
     }
 }

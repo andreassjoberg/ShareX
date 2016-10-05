@@ -30,23 +30,24 @@ using System.Windows.Forms;
 
 namespace ShareX
 {
-    public partial class ActionsForm : BaseForm
+    public partial class ActionsForm : Form
     {
         public ExternalProgram FileAction { get; private set; }
 
-        public ActionsForm()
-            : this(new ExternalProgram())
+        public ActionsForm() : this(new ExternalProgram())
         {
         }
 
         public ActionsForm(ExternalProgram fileAction)
         {
             InitializeComponent();
+            Icon = ShareXResources.Icon;
+
             FileAction = fileAction;
             txtName.Text = fileAction.Name ?? "";
             txtPath.Text = fileAction.Path ?? "";
             txtArguments.Text = fileAction.Args ?? "";
-            CodeMenu.Create<ActionsCodeMenuEntry>(txtArguments);
+            CodeMenu.Create<CodeMenuEntryActions>(txtArguments);
             txtOutputExtension.Text = fileAction.OutputExtension ?? "";
             txtExtensions.Text = fileAction.Extensions ?? "";
             cbHiddenWindow.Checked = fileAction.HiddenWindow;
@@ -54,7 +55,7 @@ namespace ShareX
 
         private void btnPathBrowse_Click(object sender, EventArgs e)
         {
-            Helpers.BrowseFile("ShareX - " + Resources.ActionsForm_btnPathBrowse_Click_Choose_file_path, txtPath);
+            Helpers.BrowseFile(txtPath);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -77,12 +78,15 @@ namespace ShareX
             FileAction.Extensions = txtExtensions.Text;
             FileAction.OutputExtension = txtOutputExtension.Text;
             FileAction.HiddenWindow = cbHiddenWindow.Checked;
+
             DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

@@ -25,12 +25,41 @@
 
 using Newtonsoft.Json;
 using ShareX.HelpersLib;
-using ShareX.UploadersLib.HelperClasses;
+using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Web;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.URLShorteners
 {
+    public class BitlyURLShortenerService : URLShortenerService
+    {
+        public override UrlShortenerType EnumValue { get; } = UrlShortenerType.BITLY;
+
+        public override Icon ServiceIcon => Resources.Bitly;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return OAuth2Info.CheckOAuth(config.BitlyOAuth2Info);
+        }
+
+        public override URLShortener CreateShortener(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            if (config.BitlyOAuth2Info == null)
+            {
+                config.BitlyOAuth2Info = new OAuth2Info(APIKeys.BitlyClientID, APIKeys.BitlyClientSecret);
+            }
+
+            return new BitlyURLShortener(config.BitlyOAuth2Info)
+            {
+                Domain = config.BitlyDomain
+            };
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpBitly;
+    }
+
     public sealed class BitlyURLShortener : URLShortener, IOAuth2Basic
     {
         private const string URLAPI = "https://api-ssl.bitly.com/";

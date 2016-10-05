@@ -27,11 +27,34 @@
 
 using Newtonsoft.Json;
 using ShareX.HelpersLib;
+using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.TextUploaders
 {
+    public class OneTimeSecretTextUploaderService : TextUploaderService
+    {
+        public override TextDestination EnumValue { get; } = TextDestination.OneTimeSecret;
+
+        public override Icon ServiceIcon => Resources.OneTimeSecret;
+
+        public override bool CheckConfig(UploadersConfig config) => true;
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new OneTimeSecret()
+            {
+                API_KEY = config.OneTimeSecretAPIKey,
+                API_USERNAME = config.OneTimeSecretAPIUsername
+            };
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpOneTimeSecret;
+    }
+
     public sealed class OneTimeSecret : TextUploader
     {
         private const string API_ENDPOINT = "https://onetimesecret.com/api/v1/share";

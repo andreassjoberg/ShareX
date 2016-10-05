@@ -232,9 +232,6 @@
   <data name="CssFileNameEditor_EditValue_Browse_for_a_Cascading_Style_Sheet___" xml:space="preserve">
     <value>Browse for a Cascading Style Sheet...</value>
   </data>
-  <data name="HashCheckForm_btnFilePathBrowse_Click_Choose_file_path" xml:space="preserve">
-    <value>Choose file path</value>
-  </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
   </data>
@@ -367,7 +364,7 @@ File size: {2:n0} / {3:n0} KB</value>
     <value>Install</value>
   </data>
   <data name="Helpers_OpenFolder_Folder_not_exist_" xml:space="preserve">
-    <value>Folder not exist:</value>
+    <value>Folder does not exist:</value>
   </data>
   <data name="Helpers_DownloadString_Download_failed_" xml:space="preserve">
     <value>Download failed:</value>
@@ -417,9 +414,6 @@ File size: {2:n0} / {3:n0} KB</value>
   <data name="HotkeyType_FolderUpload" xml:space="preserve">
     <value>Upload folder</value>
   </data>
-  <data name="HotkeyType_FreeHandRegion" xml:space="preserve">
-    <value>Capture freehand region</value>
-  </data>
   <data name="HotkeyType_FTPClient" xml:space="preserve">
     <value>FTP client</value>
   </data>
@@ -441,17 +435,11 @@ File size: {2:n0} / {3:n0} KB</value>
   <data name="HotkeyType_OpenScreenshotsFolder" xml:space="preserve">
     <value>Open screenshots folder</value>
   </data>
-  <data name="HotkeyType_PolygonRegion" xml:space="preserve">
-    <value>Capture polygon region</value>
-  </data>
   <data name="HotkeyType_PrintScreen" xml:space="preserve">
     <value>Capture entire screen</value>
   </data>
   <data name="HotkeyType_QRCode" xml:space="preserve">
     <value>QR code</value>
-  </data>
-  <data name="HotkeyType_RectangleAnnotate" xml:space="preserve">
-    <value>Capture region (Annotate)</value>
   </data>
   <data name="HotkeyType_RectangleLight" xml:space="preserve">
     <value>Capture region (Light)</value>
@@ -466,7 +454,7 @@ File size: {2:n0} / {3:n0} KB</value>
     <value>Screen color picker</value>
   </data>
   <data name="HotkeyType_ScreenRecorder" xml:space="preserve">
-    <value>Screen recording</value>
+    <value>Start/Stop screen recording</value>
   </data>
   <data name="HotkeyType_StopUploads" xml:space="preserve">
     <value>Stop all active uploads</value>
@@ -540,6 +528,9 @@ File size: {2:n0} / {3:n0} KB</value>
   <data name="AfterCaptureTasks_SaveImageToFileWithDialog" xml:space="preserve">
     <value>Save image to file as...</value>
   </data>
+  <data name="AfterCaptureTasks_ShowInExplorer" xml:space="preserve">
+    <value>Show file in explorer</value>
+  </data>
   <data name="AfterCaptureTasks_SaveThumbnailImageToFile" xml:space="preserve">
     <value>Save thumbnail image to file</value>
   </data>
@@ -608,7 +599,7 @@ Would you like to download and install it?</value>
     <value>Color picker</value>
   </data>
   <data name="HotkeyType_ScreenRecorderGIF" xml:space="preserve">
-    <value>Screen recording (GIF)</value>
+    <value>Start/Stop screen recording (GIF)</value>
   </data>
   <data name="HotkeyType_StartScreenRecorderGIF" xml:space="preserve">
     <value>Start screen recording (GIF) using last region</value>
@@ -664,9 +655,6 @@ Would you like to download and install it?</value>
   <data name="HotkeyType_FolderUpload_Category" xml:space="preserve">
     <value>Upload</value>
   </data>
-  <data name="HotkeyType_FreeHandRegion_Category" xml:space="preserve">
-    <value>Screen capture</value>
-  </data>
   <data name="HotkeyType_FTPClient_Category" xml:space="preserve">
     <value>Tools</value>
   </data>
@@ -685,17 +673,11 @@ Would you like to download and install it?</value>
   <data name="HotkeyType_OpenScreenshotsFolder_Category" xml:space="preserve">
     <value>Other</value>
   </data>
-  <data name="HotkeyType_PolygonRegion_Category" xml:space="preserve">
-    <value>Screen capture</value>
-  </data>
   <data name="HotkeyType_PrintScreen_Category" xml:space="preserve">
     <value>Screen capture</value>
   </data>
   <data name="HotkeyType_QRCode_Category" xml:space="preserve">
     <value>Tools</value>
-  </data>
-  <data name="HotkeyType_RectangleAnnotate_Category" xml:space="preserve">
-    <value>Screen capture</value>
   </data>
   <data name="HotkeyType_RectangleLight_Category" xml:space="preserve">
     <value>Screen capture</value>
@@ -823,12 +805,6 @@ Would you like to download and install it?</value>
   <data name="HotkeyType_ScrollingCapture_Category" xml:space="preserve">
     <value>Screen capture</value>
   </data>
-  <data name="HotkeyType_IRCClient" xml:space="preserve">
-    <value>IRC client</value>
-  </data>
-  <data name="HotkeyType_IRCClient_Category" xml:space="preserve">
-    <value>Tools</value>
-  </data>
   <data name="HotkeyType_ImageCombiner" xml:space="preserve">
     <value>Image combiner</value>
   </data>
@@ -856,5 +832,161 @@ Would you like to download it?</value>
   </data>
   <data name="AfterUploadTasks_ShowAfterUploadWindow" xml:space="preserve">
     <value>Show "After upload" window</value>
+  </data>
+  <data name="AfterCaptureTasks_ShowQuickTaskMenu" xml:space="preserve">
+    <value>Show quick task menu</value>
+  </data>
+  <data name="HotkeyType_OpenHistory" xml:space="preserve">
+    <value>Open history window</value>
+  </data>
+  <data name="HotkeyType_OpenHistory_Category" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="HotkeyType_OpenImageHistory" xml:space="preserve">
+    <value>Open image history window</value>
+  </data>
+  <data name="HotkeyType_OpenImageHistory_Category" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Helpers_OpenFile_File_not_exist_" xml:space="preserve">
+    <value>File does not exist:</value>
+  </data>
+  <data name="Helpers_BrowseFolder_Choose_folder" xml:space="preserve">
+    <value>Choose folder</value>
+  </data>
+  <data name="Helpers_BrowseFile_Choose_file" xml:space="preserve">
+    <value>Choose file</value>
+  </data>
+  <data name="HotkeyType_OpenMainWindow" xml:space="preserve">
+    <value>Open main window</value>
+  </data>
+  <data name="HotkeyType_OpenMainWindow_Category" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="HotkeyType_ScreenRecorderCustomRegion" xml:space="preserve">
+    <value>Start screen recording using custom region</value>
+  </data>
+  <data name="HotkeyType_ScreenRecorderCustomRegion_Category" xml:space="preserve">
+    <value>Screen record</value>
+  </data>
+  <data name="HotkeyType_ScreenRecorderGIFCustomRegion" xml:space="preserve">
+    <value>Start screen recording (GIF) using custom region</value>
+  </data>
+  <data name="HotkeyType_ScreenRecorderGIFCustomRegion_Category" xml:space="preserve">
+    <value>Screen record</value>
+  </data>
+  <data name="AfterCaptureTasks_DoOCR" xml:space="preserve">
+    <value>Recognize text (OCR)</value>
+  </data>
+  <data name="HotkeyType_TextCapture" xml:space="preserve">
+    <value>Text capture (OCR)</value>
+  </data>
+  <data name="HotkeyType_TextCapture_Category" xml:space="preserve">
+    <value>Screen capture</value>
+  </data>
+  <data name="RegionCaptureAction_CancelCapture" xml:space="preserve">
+    <value>Cancel capture</value>
+  </data>
+  <data name="RegionCaptureAction_CaptureActiveMonitor" xml:space="preserve">
+    <value>Capture active monitor</value>
+  </data>
+  <data name="RegionCaptureAction_CaptureFullscreen" xml:space="preserve">
+    <value>Capture fullscreen</value>
+  </data>
+  <data name="RegionCaptureAction_None" xml:space="preserve">
+    <value>Do nothing</value>
+  </data>
+  <data name="RegionCaptureAction_OpenOptionsMenu" xml:space="preserve">
+    <value>Open options menu</value>
+  </data>
+  <data name="RegionCaptureAction_RemoveShape" xml:space="preserve">
+    <value>Remove shape</value>
+  </data>
+  <data name="RegionCaptureAction_RemoveShapeCancelCapture" xml:space="preserve">
+    <value>Remove shape or cancel capture</value>
+  </data>
+  <data name="RegionCaptureAction_SwapToolType" xml:space="preserve">
+    <value>Swap tool type</value>
+  </data>
+  <data name="ShapeType_DrawingArrow" xml:space="preserve">
+    <value>Drawing: Arrow</value>
+  </data>
+  <data name="ShapeType_EffectBlur" xml:space="preserve">
+    <value>Effect: Blur</value>
+  </data>
+  <data name="ShapeType_DrawingEllipse" xml:space="preserve">
+    <value>Drawing: Ellipse</value>
+  </data>
+  <data name="ShapeType_EffectHighlight" xml:space="preserve">
+    <value>Effect: Highlight</value>
+  </data>
+  <data name="ShapeType_DrawingLine" xml:space="preserve">
+    <value>Drawing: Line</value>
+  </data>
+  <data name="ShapeType_EffectPixelate" xml:space="preserve">
+    <value>Effect: Pixelate</value>
+  </data>
+  <data name="ShapeType_DrawingRectangle" xml:space="preserve">
+    <value>Drawing: Rectangle</value>
+  </data>
+  <data name="ShapeType_DrawingRoundedRectangle" xml:space="preserve">
+    <value>Drawing: Rounded rectangle</value>
+  </data>
+  <data name="ShapeType_DrawingStep" xml:space="preserve">
+    <value>Drawing: Step</value>
+  </data>
+  <data name="ShapeType_DrawingText" xml:space="preserve">
+    <value>Drawing: Text</value>
+  </data>
+  <data name="ShapeType_RegionEllipse" xml:space="preserve">
+    <value>Region: Ellipse</value>
+  </data>
+  <data name="ShapeType_RegionRectangle" xml:space="preserve">
+    <value>Region: Rectangle</value>
+  </data>
+  <data name="ShapeType_RegionRoundedRectangle" xml:space="preserve">
+    <value>Region: Rounded rectangle</value>
+  </data>
+  <data name="ScrollingCaptureScrollMethod_Automatic" xml:space="preserve">
+    <value>Automatically try all methods until one works</value>
+  </data>
+  <data name="ScrollingCaptureScrollMethod_KeyPressPageDown" xml:space="preserve">
+    <value>Simulate pressing "Page down" key</value>
+  </data>
+  <data name="ScrollingCaptureScrollMethod_MouseWheel" xml:space="preserve">
+    <value>Simulate mouse wheel scrolling</value>
+  </data>
+  <data name="ScrollingCaptureScrollMethod_SendMessageScroll" xml:space="preserve">
+    <value>Send scroll message to window or control</value>
+  </data>
+  <data name="ScrollingCaptureScrollTopMethod_All" xml:space="preserve">
+    <value>First simulate pressing "Home" key then send scroll top message</value>
+  </data>
+  <data name="ScrollingCaptureScrollTopMethod_KeyPressHome" xml:space="preserve">
+    <value>Simulate pressing "Home" key</value>
+  </data>
+  <data name="ScrollingCaptureScrollTopMethod_None" xml:space="preserve">
+    <value>Disable scrolling to top</value>
+  </data>
+  <data name="ScrollingCaptureScrollTopMethod_SendMessageTop" xml:space="preserve">
+    <value>Send scroll top message</value>
+  </data>
+  <data name="HotkeyType_AbortScreenRecording" xml:space="preserve">
+    <value>Abort screen recording</value>
+  </data>
+  <data name="HotkeyType_AbortScreenRecording_Category" xml:space="preserve">
+    <value>Screen record</value>
+  </data>
+  <data name="ShapeType_RegionFreehand" xml:space="preserve">
+    <value>Region: Freehand</value>
+  </data>
+  <data name="ShapeType_DrawingFreehand" xml:space="preserve">
+    <value>Drawing: Freehand</value>
+  </data>
+  <data name="ShapeType_DrawingImage" xml:space="preserve">
+    <value>Drawing: Image</value>
+  </data>
+  <data name="ShapeType_DrawingSpeechBalloon" xml:space="preserve">
+    <value>Drawing: Speech balloon</value>
   </data>
 </root>

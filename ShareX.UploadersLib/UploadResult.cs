@@ -68,8 +68,7 @@ namespace ShareX.UploadersLib
             IsURLExpected = true;
         }
 
-        public UploadResult(string source, string url = null)
-            : this()
+        public UploadResult(string source, string url = null) : this()
         {
             Response = source;
             URL = url;
@@ -87,7 +86,7 @@ namespace ShareX.UploadersLib
                 return URL;
             }
 
-            return string.Empty;
+            return "";
         }
 
         public string ErrorsToString()

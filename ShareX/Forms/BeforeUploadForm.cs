@@ -30,11 +30,12 @@ using System.Windows.Forms;
 
 namespace ShareX
 {
-    public partial class BeforeUploadForm : BaseForm
+    public partial class BeforeUploadForm : Form
     {
         public BeforeUploadForm(TaskInfo info)
         {
             InitializeComponent();
+            Icon = ShareXResources.Icon;
             DialogResult = DialogResult.OK;
 
             ucBeforeUpload.InitCompleted += currentDestination =>
@@ -46,6 +47,11 @@ namespace ShareX
             };
 
             ucBeforeUpload.Init(info);
+        }
+
+        private void BeforeUploadForm_Shown(object sender, EventArgs e)
+        {
+            this.ForceActivate();
         }
 
         private void btnOK_Click(object sender, EventArgs e)

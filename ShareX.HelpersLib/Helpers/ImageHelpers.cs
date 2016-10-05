@@ -243,30 +243,6 @@ namespace ShareX.HelpersLib
             return null;
         }
 
-        public static Image CropImage(Image img, Rectangle rect, GraphicsPath gp)
-        {
-            if (img != null && rect.Width > 0 && rect.Height > 0 && gp != null)
-            {
-                Bitmap bmp = new Bitmap(rect.Width, rect.Height);
-                bmp.SetResolution(img.HorizontalResolution, img.VerticalResolution);
-
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    g.SetHighQuality();
-
-                    using (Region region = new Region(gp))
-                    {
-                        g.Clip = region;
-                        g.DrawImage(img, new Rectangle(0, 0, rect.Width, rect.Height), rect, GraphicsUnit.Pixel);
-                    }
-                }
-
-                return bmp;
-            }
-
-            return null;
-        }
-
         public static Image DrawOutline(Image img, GraphicsPath gp)
         {
             if (img != null && gp != null)
@@ -331,7 +307,7 @@ namespace ShareX.HelpersLib
 
                 using (GraphicsPath gp = new GraphicsPath())
                 {
-                    gp.AddRoundedRectangle(new RectangleF(0, 0, img.Width, img.Height), cornerRadius);
+                    gp.AddRoundedRectangleProper(new RectangleF(0, 0, img.Width, img.Height), cornerRadius);
 
                     using (TextureBrush brush = new TextureBrush(img))
                     {
@@ -523,7 +499,7 @@ namespace ShareX.HelpersLib
 
         public static Image DrawCheckers(Image img)
         {
-            return DrawCheckers(img, 8, Color.LightGray, Color.White);
+            return DrawCheckers(img, 10, Color.LightGray, Color.White);
         }
 
         public static Image DrawCheckers(Image img, int size, Color color1, Color color2)
@@ -548,13 +524,18 @@ namespace ShareX.HelpersLib
             Bitmap bmp = new Bitmap(width, height);
 
             using (Graphics g = Graphics.FromImage(bmp))
-            using (Image checker = CreateCheckers(8, Color.LightGray, Color.White))
+            using (Image checker = CreateCheckers())
             using (Brush checkerBrush = new TextureBrush(checker, WrapMode.Tile))
             {
                 g.FillRectangle(checkerBrush, new Rectangle(0, 0, bmp.Width, bmp.Height));
             }
 
             return bmp;
+        }
+
+        public static Image CreateCheckers()
+        {
+            return CreateCheckers(10, Color.LightGray, Color.White);
         }
 
         public static Image CreateCheckers(int size, Color color1, Color color2)
@@ -606,18 +587,14 @@ namespace ShareX.HelpersLib
             g.SmoothingMode = tempMode;
         }
 
-        public static void DrawTextWithShadow(Graphics g, string text, PointF position, Font font, Color textColor, Color shadowColor, int shadowOffset = 1)
+        public static void DrawTextWithShadow(Graphics g, string text, PointF position, Font font, Brush textBrush, Brush shadowBrush)
         {
-            using (Brush textBrush = new SolidBrush(textColor))
-            using (Brush shadowBrush = new SolidBrush(shadowColor))
-            {
-                DrawTextWithShadow(g, text, position, font, textBrush, shadowBrush, shadowOffset);
-            }
+            DrawTextWithShadow(g, text, position, font, textBrush, shadowBrush, new Point(1, 1));
         }
 
-        public static void DrawTextWithShadow(Graphics g, string text, PointF position, Font font, Brush textBrush, Brush shadowBrush, int shadowOffset = 1)
+        public static void DrawTextWithShadow(Graphics g, string text, PointF position, Font font, Brush textBrush, Brush shadowBrush, Point shadowOffset)
         {
-            g.DrawString(text, font, shadowBrush, position.X + shadowOffset, position.Y + shadowOffset);
+            g.DrawString(text, font, shadowBrush, position.X + shadowOffset.X, position.Y + shadowOffset.Y);
             g.DrawString(text, font, textBrush, position.X, position.Y);
         }
 
@@ -1036,7 +1013,7 @@ namespace ShareX.HelpersLib
                     // Create sharpening filter.
                     const int filterSize = 5;
 
-                    var filter = new double[,]
+                    double[,] filter = new double[,]
                     {
                         {-1, -1, -1, -1, -1},
                         {-1,  2,  2,  2, -1},
@@ -1050,7 +1027,7 @@ namespace ShareX.HelpersLib
 
                     const int s = filterSize / 2;
 
-                    var result = new Color[image.Width, image.Height];
+                    Color[,] result = new Color[image.Width, image.Height];
 
                     // Lock image bits for read/write.
                     if (sharpenImage != null)
@@ -1059,7 +1036,7 @@ namespace ShareX.HelpersLib
 
                         // Declare an array to hold the bytes of the bitmap.
                         int bytes = pbits.Stride * height;
-                        var rgbValues = new byte[bytes];
+                        byte[] rgbValues = new byte[bytes];
 
                         // Copy the RGB values into the array.
                         Marshal.Copy(pbits.Scan0, rgbValues, 0, bytes);
@@ -1139,8 +1116,7 @@ namespace ShareX.HelpersLib
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "Image files (*.png, *.jpg, *.jpeg, *.jpe, *.jfif, *.gif, *.bmp, *.tif, *.tiff)|*.png;*.jpg;*.jpeg;*.jpe;*.jfif;*.gif;*.bmp;*.tif;*.tiff|" +
-                    "PNG (*.png)|*.png|JPEG (*.jpg, *.jpeg, *.jpe, *.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|GIF (*.gif)|*.gif|BMP (*.bmp)|*.bmp|TIFF (*.tif, *.tiff)|*.tif;*.tiff|" +
-                    "All files (*.*)|*.*";
+                    "PNG (*.png)|*.png|JPEG (*.jpg, *.jpeg, *.jpe, *.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|GIF (*.gif)|*.gif|BMP (*.bmp)|*.bmp|TIFF (*.tif, *.tiff)|*.tif;*.tiff";
 
                 ofd.Multiselect = multiselect;
 
@@ -1160,6 +1136,8 @@ namespace ShareX.HelpersLib
 
             if (!string.IsNullOrEmpty(ext))
             {
+                ext = ext.ToLowerInvariant();
+
                 switch (ext)
                 {
                     default:
@@ -1207,7 +1185,7 @@ namespace ShareX.HelpersLib
                     sfd.FileName = Path.GetFileNameWithoutExtension(filePath);
                 }
 
-                sfd.DefaultExt = ".png";
+                sfd.DefaultExt = "png";
                 sfd.Filter = "PNG (*.png)|*.png|JPEG (*.jpg, *.jpeg, *.jpe, *.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|GIF (*.gif)|*.gif|BMP (*.bmp)|*.bmp|TIFF (*.tif, *.tiff)|*.tif;*.tiff";
 
                 if (sfd.ShowDialog() == DialogResult.OK)
@@ -1282,6 +1260,69 @@ namespace ShareX.HelpersLib
             }
 
             return bmp;
+        }
+
+        public static Image CreateColorPickerIcon(Color color, Rectangle rect)
+        {
+            Bitmap bmp = new Bitmap(rect.Width, rect.Height);
+
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                DrawColorPickerIcon(g, color, rect);
+            }
+
+            return bmp;
+        }
+
+        public static void DrawColorPickerIcon(Graphics g, Color color, Rectangle rect)
+        {
+            if (color.A < 255)
+            {
+                using (Image checker = CreateCheckers(rect.Width / 2, rect.Height / 2, Color.LightGray, Color.White))
+                {
+                    g.DrawImage(checker, rect);
+                }
+            }
+
+            using (SolidBrush brush = new SolidBrush(color))
+            {
+                g.FillRectangle(brush, rect);
+            }
+
+            g.DrawRectangleProper(Pens.Black, rect);
+        }
+
+        public static void HighlightImage(Bitmap bmp)
+        {
+            HighlightImage(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height));
+        }
+
+        public static void HighlightImage(Bitmap bmp, Color highlightColor)
+        {
+            HighlightImage(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height), highlightColor);
+        }
+
+        public static void HighlightImage(Bitmap bmp, Rectangle rect)
+        {
+            HighlightImage(bmp, rect, Color.Yellow);
+        }
+
+        public static void HighlightImage(Bitmap bmp, Rectangle rect, Color highlightColor)
+        {
+            using (UnsafeBitmap unsafeBitmap = new UnsafeBitmap(bmp, true))
+            {
+                for (int y = rect.Y; y < rect.Height; y++)
+                {
+                    for (int x = rect.X; x < rect.Width; x++)
+                    {
+                        ColorBgra color = unsafeBitmap.GetPixel(x, y);
+                        color.Red = Math.Min(color.Red, highlightColor.R);
+                        color.Green = Math.Min(color.Green, highlightColor.G);
+                        color.Blue = Math.Min(color.Blue, highlightColor.B);
+                        unsafeBitmap.SetPixel(x, y, color);
+                    }
+                }
+            }
         }
     }
 }

@@ -24,22 +24,54 @@
 #endregion License Information (GPL v3)
 
 using ShareX.HelpersLib;
+using ShareX.UploadersLib.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class SendSpaceFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.SendSpace;
+
+        public override Icon ServiceIcon => Resources.SendSpace;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return config.SendSpaceAccountType == AccountType.Anonymous ||
+                (!string.IsNullOrEmpty(config.SendSpaceUsername) && !string.IsNullOrEmpty(config.SendSpacePassword));
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new SendSpace(APIKeys.SendSpaceKey)
+            {
+                AccountType = config.SendSpaceAccountType,
+                Username = config.SendSpaceUsername,
+                Password = config.SendSpacePassword
+            };
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpSendSpace;
+    }
+
     public sealed class SendSpace : FileUploader
     {
         private string APIKey;
 
         private const string APIURL = "http://api.sendspace.com/rest/";
         private const string APIVersion = "1.0";
+
+        public AccountType AccountType { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
 
         /// <summary>
         /// Upload speed limit in kilobytes, 0 for unlimited
@@ -51,6 +83,20 @@ namespace ShareX.UploadersLib.FileUploaders
         public SendSpace(string apiKey)
         {
             APIKey = apiKey;
+        }
+
+        public override UploadResult Upload(Stream stream, string fileName)
+        {
+            if (AccountType == AccountType.User)
+            {
+                SendSpaceManager.PrepareUploadInfo(APIKey, Username, Password);
+            }
+            else
+            {
+                SendSpaceManager.PrepareUploadInfo(APIKey);
+            }
+
+            return Upload(stream, fileName, SendSpaceManager.UploadInfo);
         }
 
         #region Helpers
@@ -480,11 +526,6 @@ namespace ShareX.UploadersLib.FileUploaders
             }
 
             return result;
-        }
-
-        public override UploadResult Upload(Stream stream, string fileName)
-        {
-            return Upload(stream, fileName, SendSpaceManager.UploadInfo);
         }
 
         public class CheckProgress : IDisposable

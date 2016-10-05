@@ -27,6 +27,21 @@ using System.Collections.Generic;
 
 namespace ShareX.UploadersLib.TextUploaders
 {
+    public class PasteeTextUploaderService : TextUploaderService
+    {
+        public override TextDestination EnumValue { get; } = TextDestination.Pastee;
+
+        public override bool CheckConfig(UploadersConfig config) => true;
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new Pastee
+            {
+                Lexer = taskInfo.TextFormat
+            };
+        }
+    }
+
     public sealed class Pastee : TextUploader
     {
         public string Lexer { get; set; }

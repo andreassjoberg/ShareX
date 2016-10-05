@@ -178,7 +178,7 @@ namespace ShareX
             if (InitCompleted != null)
             {
                 RadioButton rbDestination = flp.Controls.OfType<RadioButton>().FirstOrDefault(x => x.Checked);
-                string currentDestination = string.Empty;
+                string currentDestination = "";
                 if (rbDestination != null)
                 {
                     currentDestination = rbDestination.Text;
@@ -191,7 +191,7 @@ namespace ShareX
         {
             Enum destination = (Enum)Enum.ToObject(typeof(T), index);
 
-            if (Program.UploadersConfig.IsValid<T>(index))
+            if (UploadersConfigValidator.Validate<T>(index, Program.UploadersConfig))
             {
                 RadioButton rb = new RadioButton() { AutoSize = true };
 

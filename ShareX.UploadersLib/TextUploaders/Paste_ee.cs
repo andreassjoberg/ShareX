@@ -23,10 +23,29 @@
 
 #endregion License Information (GPL v3)
 
+using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.TextUploaders
 {
+    public class Paste_eeTextUploaderService : TextUploaderService
+    {
+        public override TextDestination EnumValue { get; } = TextDestination.Paste_ee;
+
+        public override Image ServiceImage => Resources.document;
+
+        public override bool CheckConfig(UploadersConfig config) => true;
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new Paste_ee(config.Paste_eeUserAPIKey);
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpPaste_ee;
+    }
+
     public sealed class Paste_ee : TextUploader
     {
         public string APIKey { get; private set; }
@@ -54,7 +73,7 @@ namespace ShareX.UploadersLib.TextUploaders
 
                 Dictionary<string, string> arguments = new Dictionary<string, string>();
                 arguments.Add("key", APIKey);
-                arguments.Add("description", string.Empty);
+                arguments.Add("description", "");
                 arguments.Add("paste", text);
                 arguments.Add("format", "simple");
                 arguments.Add("return", "link");

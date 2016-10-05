@@ -45,15 +45,13 @@ namespace ShareX.HelpersLib
             Args = "%input";
         }
 
-        public ExternalProgram(string name, string path)
-            : this()
+        public ExternalProgram(string name, string path) : this()
         {
             Name = name;
             Path = path;
         }
 
-        public ExternalProgram(string name, string path, string args)
-            : this(name, path)
+        public ExternalProgram(string name, string path, string args) : this(name, path)
         {
             if (!string.IsNullOrEmpty(args))
             {
@@ -81,8 +79,6 @@ namespace ShareX.HelpersLib
                         }
                         else
                         {
-                            string args = Args.Replace("%filepath%", '"' + filePath + '"').Replace("%input", '"' + filePath + '"');
-
                             if (!string.IsNullOrEmpty(OutputExtension))
                             {
                                 newFilePath = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(filePath), System.IO.Path.GetFileNameWithoutExtension(filePath));
@@ -93,10 +89,9 @@ namespace ShareX.HelpersLib
                                 }
 
                                 newFilePath += OutputExtension;
-                                args = args.Replace("%output", '"' + newFilePath + '"');
                             }
 
-                            psi.Arguments = args;
+                            psi.Arguments = CodeMenuEntryActions.Parse(Args, filePath, newFilePath);
                         }
 
                         if (HiddenWindow)

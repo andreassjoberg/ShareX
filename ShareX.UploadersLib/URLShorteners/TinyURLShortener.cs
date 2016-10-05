@@ -27,6 +27,18 @@ using System.Collections.Generic;
 
 namespace ShareX.UploadersLib.URLShorteners
 {
+    public class TinyURLShortenerService : URLShortenerService
+    {
+        public override UrlShortenerType EnumValue { get; } = UrlShortenerType.TINYURL;
+
+        public override bool CheckConfig(UploadersConfig config) => true;
+
+        public override URLShortener CreateShortener(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new TinyURLShortener();
+        }
+    }
+
     public sealed class TinyURLShortener : URLShortener
     {
         public override UploadResult ShortenURL(string url)

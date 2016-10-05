@@ -25,14 +25,38 @@
 
 using Newtonsoft.Json;
 using ShareX.HelpersLib;
-using ShareX.UploadersLib.HelperClasses;
 using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class OneDriveFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.OneDrive;
+
+        public override Icon ServiceIcon => Resources.OneDrive;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return OAuth2Info.CheckOAuth(config.OneDriveOAuth2Info);
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new OneDrive(config.OneDriveOAuth2Info)
+            {
+                FolderID = config.OneDriveSelectedFolder.id,
+                AutoCreateShareableLink = config.OneDriveAutoCreateShareableLink
+            };
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpOneDrive;
+    }
+
     public sealed class OneDrive : FileUploader, IOAuth2
     {
         public OAuth2Info AuthInfo { get; set; }

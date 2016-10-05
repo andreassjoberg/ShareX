@@ -125,11 +125,48 @@
   <data name="scMain.Location" type="System.Drawing.Point, System.Drawing">
     <value>160, 0</value>
   </data>
+  <data name="pbTips.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="pbTips.Location" type="System.Drawing.Point, System.Drawing">
+    <value>311, 0</value>
+  </data>
+  <data name="pbTips.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 24</value>
+  </data>
+  <data name="pbTips.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>CenterImage</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="pbTips.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <metadata name="ttMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>567, 17</value>
+  </metadata>
+  <data name="pbTips.ToolTip" xml:space="preserve">
+    <value>Show tips and hotkeys</value>
+  </data>
+  <data name="&gt;&gt;pbTips.Name" xml:space="preserve">
+    <value>pbTips</value>
+  </data>
+  <data name="&gt;&gt;pbTips.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbTips.Parent" xml:space="preserve">
+    <value>scMain.Panel1</value>
+  </data>
+  <data name="&gt;&gt;pbTips.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="lblMainFormTip.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="lblMainFormTip.Font" type="System.Drawing.Font, System.Drawing">
     <value>Microsoft Sans Serif, 14.25pt</value>
+  </data>
+  <data name="lblMainFormTip.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="lblMainFormTip.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 40</value>
@@ -140,7 +177,6 @@
   <data name="lblMainFormTip.Size" type="System.Drawing.Size, System.Drawing">
     <value>320, 344</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lblMainFormTip.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -154,7 +190,7 @@
     <value>scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;lblMainFormTip.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="lblSplitter.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Left</value>
@@ -178,7 +214,7 @@
     <value>scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;lblSplitter.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="chFilename.Text" xml:space="preserve">
     <value>Filename</value>
@@ -241,7 +277,7 @@
     <value>scMain.Panel1</value>
   </data>
   <data name="&gt;&gt;lvUploads.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;scMain.Panel1.Name" xml:space="preserve">
     <value>scMain.Panel1</value>
@@ -313,6 +349,99 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;scMain.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="flpPatreon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="flpPatreon.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="pbPatreonOpen.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="pbPatreonOpen.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="pbPatreonOpen.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 45</value>
+  </data>
+  <data name="pbPatreonOpen.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>AutoSize</value>
+  </data>
+  <data name="pbPatreonOpen.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="pbPatreonOpen.ToolTip" xml:space="preserve">
+    <value>Open ShareX Patreon campaign web page</value>
+  </data>
+  <data name="&gt;&gt;pbPatreonOpen.Name" xml:space="preserve">
+    <value>pbPatreonOpen</value>
+  </data>
+  <data name="&gt;&gt;pbPatreonOpen.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbPatreonOpen.Parent" xml:space="preserve">
+    <value>flpPatreon</value>
+  </data>
+  <data name="&gt;&gt;pbPatreonOpen.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pbPatreonHide.Location" type="System.Drawing.Point, System.Drawing">
+    <value>168, 0</value>
+  </data>
+  <data name="pbPatreonHide.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="pbPatreonHide.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 45</value>
+  </data>
+  <data name="pbPatreonHide.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>AutoSize</value>
+  </data>
+  <data name="pbPatreonHide.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="pbPatreonHide.ToolTip" xml:space="preserve">
+    <value>Hide Patreon button permanently</value>
+  </data>
+  <data name="&gt;&gt;pbPatreonHide.Name" xml:space="preserve">
+    <value>pbPatreonHide</value>
+  </data>
+  <data name="&gt;&gt;pbPatreonHide.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pbPatreonHide.Parent" xml:space="preserve">
+    <value>flpPatreon</value>
+  </data>
+  <data name="&gt;&gt;pbPatreonHide.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="flpPatreon.Location" type="System.Drawing.Point, System.Drawing">
+    <value>613, 356</value>
+  </data>
+  <data name="flpPatreon.Size" type="System.Drawing.Size, System.Drawing">
+    <value>215, 45</value>
+  </data>
+  <data name="flpPatreon.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="flpPatreon.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="flpPatreon.WrapContents" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;flpPatreon.Name" xml:space="preserve">
+    <value>flpPatreon</value>
+  </data>
+  <data name="&gt;&gt;flpPatreon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flpPatreon.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;flpPatreon.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <metadata name="tsMain.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -348,12 +477,6 @@
   <data name="tsmiRectangle.Text" xml:space="preserve">
     <value>Region</value>
   </data>
-  <data name="tsmiRectangleAnnotate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="tsmiRectangleAnnotate.Text" xml:space="preserve">
-    <value>Region (Annotate)</value>
-  </data>
   <data name="tsmiRectangleLight.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 22</value>
   </data>
@@ -365,18 +488,6 @@
   </data>
   <data name="tsmiRectangleTransparent.Text" xml:space="preserve">
     <value>Region (Transparent)</value>
-  </data>
-  <data name="tsmiPolygon.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="tsmiPolygon.Text" xml:space="preserve">
-    <value>Polygon</value>
-  </data>
-  <data name="tsmiFreeHand.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="tsmiFreeHand.Text" xml:space="preserve">
-    <value>Freehand</value>
   </data>
   <data name="tsmiLastRegion.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 22</value>
@@ -407,6 +518,12 @@
   </data>
   <data name="tsmiWebpageCapture.Text" xml:space="preserve">
     <value>Webpage capture...</value>
+  </data>
+  <data name="tsmiTextCapture.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 22</value>
+  </data>
+  <data name="tsmiTextCapture.Text" xml:space="preserve">
+    <value>Text capture (OCR)...</value>
   </data>
   <data name="tsmiAutoCapture.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 22</value>
@@ -538,7 +655,7 @@
     <value>183, 22</value>
   </data>
   <data name="tsmiIndexFolder.Text" xml:space="preserve">
-    <value>Index folder...</value>
+    <value>Directory indexer...</value>
   </data>
   <data name="tsmiImageCombiner.Size" type="System.Drawing.Size, System.Drawing">
     <value>183, 22</value>
@@ -660,18 +777,6 @@
   <data name="tsddbDestinations.Text" xml:space="preserve">
     <value>Destinations</value>
   </data>
-  <data name="tsbApplicationSettings.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="tsbApplicationSettings.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
-    <value>Magenta</value>
-  </data>
-  <data name="tsbApplicationSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 20</value>
-  </data>
-  <data name="tsbApplicationSettings.Text" xml:space="preserve">
-    <value>Application settings...</value>
-  </data>
   <data name="tsbTaskSettings.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
@@ -683,6 +788,18 @@
   </data>
   <data name="tsbTaskSettings.Text" xml:space="preserve">
     <value>Task settings...</value>
+  </data>
+  <data name="tsbApplicationSettings.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="tsbApplicationSettings.ImageTransparentColor" type="System.Drawing.Color, System.Drawing">
+    <value>Magenta</value>
+  </data>
+  <data name="tsbApplicationSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>147, 20</value>
+  </data>
+  <data name="tsbApplicationSettings.Text" xml:space="preserve">
+    <value>Application settings...</value>
   </data>
   <data name="tsbHotkeySettings.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
@@ -829,7 +946,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tsMain.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <metadata name="cmsTaskInfo.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>286, 17</value>
@@ -1041,6 +1158,12 @@
   <data name="tsmiUploadSelectedFile.Text" xml:space="preserve">
     <value>Upload</value>
   </data>
+  <data name="tsmiDownloadSelectedURL.Size" type="System.Drawing.Size, System.Drawing">
+    <value>172, 22</value>
+  </data>
+  <data name="tsmiDownloadSelectedURL.Text" xml:space="preserve">
+    <value>Download</value>
+  </data>
   <data name="tsmiEditSelectedFile.Size" type="System.Drawing.Size, System.Drawing">
     <value>172, 22</value>
   </data>
@@ -1092,6 +1215,12 @@
   <data name="tsmiHideMenu.Text" xml:space="preserve">
     <value>Hide menu</value>
   </data>
+  <data name="tsmiHideColumns.Size" type="System.Drawing.Size, System.Drawing">
+    <value>172, 22</value>
+  </data>
+  <data name="tsmiHideColumns.Text" xml:space="preserve">
+    <value>Hide columns</value>
+  </data>
   <data name="tsmiImagePreviewShow.Size" type="System.Drawing.Size, System.Drawing">
     <value>130, 22</value>
   </data>
@@ -1117,7 +1246,7 @@
     <value>Image preview</value>
   </data>
   <data name="cmsTaskInfo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>173, 318</value>
+    <value>173, 362</value>
   </data>
   <data name="&gt;&gt;cmsTaskInfo.Name" xml:space="preserve">
     <value>cmsTaskInfo</value>
@@ -1155,12 +1284,6 @@
   <data name="tsmiTrayRectangle.Text" xml:space="preserve">
     <value>Region</value>
   </data>
-  <data name="tsmiTrayRectangleAnnotate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="tsmiTrayRectangleAnnotate.Text" xml:space="preserve">
-    <value>Region (Annotate)</value>
-  </data>
   <data name="tsmiTrayRectangleLight.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 22</value>
   </data>
@@ -1172,18 +1295,6 @@
   </data>
   <data name="tsmiTrayRectangleTransparent.Text" xml:space="preserve">
     <value>Region (Transparent)</value>
-  </data>
-  <data name="tsmiTrayPolygon.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="tsmiTrayPolygon.Text" xml:space="preserve">
-    <value>Polygon</value>
-  </data>
-  <data name="tsmiTrayFreeHand.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="tsmiTrayFreeHand.Text" xml:space="preserve">
-    <value>Freehand</value>
   </data>
   <data name="tsmiTrayLastRegion.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 22</value>
@@ -1214,6 +1325,12 @@
   </data>
   <data name="tsmiTrayWebpageCapture.Text" xml:space="preserve">
     <value>Webpage capture...</value>
+  </data>
+  <data name="tsmiTrayTextCapture.Size" type="System.Drawing.Size, System.Drawing">
+    <value>191, 22</value>
+  </data>
+  <data name="tsmiTrayTextCapture.Text" xml:space="preserve">
+    <value>Text capture (OCR)...</value>
   </data>
   <data name="tsmiTrayAutoCapture.Size" type="System.Drawing.Size, System.Drawing">
     <value>191, 22</value>
@@ -1327,7 +1444,7 @@
     <value>183, 22</value>
   </data>
   <data name="tsmiTrayIndexFolder.Text" xml:space="preserve">
-    <value>Index folder...</value>
+    <value>Directory indexer...</value>
   </data>
   <data name="tsmiTrayImageCombiner.Size" type="System.Drawing.Size, System.Drawing">
     <value>183, 22</value>
@@ -1372,13 +1489,13 @@
     <value>188, 22</value>
   </data>
   <data name="tsmiTrayAfterCaptureTasks.Text" xml:space="preserve">
-    <value>After capture</value>
+    <value>After capture tasks</value>
   </data>
   <data name="tsmiTrayAfterUploadTasks.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 22</value>
   </data>
   <data name="tsmiTrayAfterUploadTasks.Text" xml:space="preserve">
-    <value>After upload</value>
+    <value>After upload tasks</value>
   </data>
   <data name="tsmiTrayImageUploaders.Size" type="System.Drawing.Size, System.Drawing">
     <value>187, 22</value>
@@ -1425,17 +1542,17 @@
   <data name="tsmiTrayDestinations.Text" xml:space="preserve">
     <value>Destinations</value>
   </data>
-  <data name="tsmiTrayApplicationSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 22</value>
-  </data>
-  <data name="tsmiTrayApplicationSettings.Text" xml:space="preserve">
-    <value>Application settings...</value>
-  </data>
   <data name="tsmiTrayTaskSettings.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 22</value>
   </data>
   <data name="tsmiTrayTaskSettings.Text" xml:space="preserve">
     <value>Task settings...</value>
+  </data>
+  <data name="tsmiTrayApplicationSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 22</value>
+  </data>
+  <data name="tsmiTrayApplicationSettings.Text" xml:space="preserve">
+    <value>Application settings...</value>
   </data>
   <data name="tsmiTrayHotkeySettings.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 22</value>
@@ -1540,7 +1657,7 @@
     <value>188, 22</value>
   </data>
   <data name="tsmiTrayShow.Text" xml:space="preserve">
-    <value>Show ShareX window</value>
+    <value>Open main window</value>
   </data>
   <data name="tsmiTrayExit.Size" type="System.Drawing.Size, System.Drawing">
     <value>188, 22</value>
@@ -1549,7 +1666,7 @@
     <value>Exit</value>
   </data>
   <data name="cmsTray.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 484</value>
+    <value>189, 462</value>
   </data>
   <data name="&gt;&gt;cmsTray.Name" xml:space="preserve">
     <value>cmsTray</value>
@@ -1559,10 +1676,73 @@
   </data>
   <data name="niTray.Text" xml:space="preserve">
     <value>ShareX</value>
-  <comment>@Invariant</comment></data>
+  </data>
   <metadata name="timerTraySingleClick.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>405, 17</value>
   </metadata>
+  <data name="pTips.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="pTips.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblTips.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lblTips.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9.75pt</value>
+  </data>
+  <data name="lblTips.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lblTips.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="lblTips.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>10, 10, 10, 10</value>
+  </data>
+  <data name="lblTips.Size" type="System.Drawing.Size, System.Drawing">
+    <value>20, 36</value>
+  </data>
+  <data name="lblTips.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lblTips.Name" xml:space="preserve">
+    <value>lblTips</value>
+  </data>
+  <data name="&gt;&gt;lblTips.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lblTips.Parent" xml:space="preserve">
+    <value>pTips</value>
+  </data>
+  <data name="&gt;&gt;lblTips.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="pTips.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 29</value>
+  </data>
+  <data name="pTips.Size" type="System.Drawing.Size, System.Drawing">
+    <value>818, 370</value>
+  </data>
+  <data name="pTips.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="pTips.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;pTips.Name" xml:space="preserve">
+    <value>pTips</value>
+  </data>
+  <data name="&gt;&gt;pTips.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pTips.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;pTips.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -1576,7 +1756,7 @@
     <value>834, 407</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>400, 250</value>
+    <value>500, 250</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>
@@ -1653,12 +1833,6 @@
   <data name="&gt;&gt;tsmiRectangle.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsmiRectangleAnnotate.Name" xml:space="preserve">
-    <value>tsmiRectangleAnnotate</value>
-  </data>
-  <data name="&gt;&gt;tsmiRectangleAnnotate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;tsmiRectangleLight.Name" xml:space="preserve">
     <value>tsmiRectangleLight</value>
   </data>
@@ -1669,18 +1843,6 @@
     <value>tsmiRectangleTransparent</value>
   </data>
   <data name="&gt;&gt;tsmiRectangleTransparent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmiPolygon.Name" xml:space="preserve">
-    <value>tsmiPolygon</value>
-  </data>
-  <data name="&gt;&gt;tsmiPolygon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmiFreeHand.Name" xml:space="preserve">
-    <value>tsmiFreeHand</value>
-  </data>
-  <data name="&gt;&gt;tsmiFreeHand.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tsmiLastRegion.Name" xml:space="preserve">
@@ -1711,6 +1873,12 @@
     <value>tsmiWebpageCapture</value>
   </data>
   <data name="&gt;&gt;tsmiWebpageCapture.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsmiTextCapture.Name" xml:space="preserve">
+    <value>tsmiTextCapture</value>
+  </data>
+  <data name="&gt;&gt;tsmiTextCapture.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tsmiAutoCapture.Name" xml:space="preserve">
@@ -2241,6 +2409,12 @@
   <data name="&gt;&gt;tsmiUploadSelectedFile.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;tsmiDownloadSelectedURL.Name" xml:space="preserve">
+    <value>tsmiDownloadSelectedURL</value>
+  </data>
+  <data name="&gt;&gt;tsmiDownloadSelectedURL.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;tsmiEditSelectedFile.Name" xml:space="preserve">
     <value>tsmiEditSelectedFile</value>
   </data>
@@ -2293,6 +2467,12 @@
     <value>tsmiHideMenu</value>
   </data>
   <data name="&gt;&gt;tsmiHideMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsmiHideColumns.Name" xml:space="preserve">
+    <value>tsmiHideColumns</value>
+  </data>
+  <data name="&gt;&gt;tsmiHideColumns.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tsmiImagePreview.Name" xml:space="preserve">
@@ -2355,12 +2535,6 @@
   <data name="&gt;&gt;tsmiTrayRectangle.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tsmiTrayRectangleAnnotate.Name" xml:space="preserve">
-    <value>tsmiTrayRectangleAnnotate</value>
-  </data>
-  <data name="&gt;&gt;tsmiTrayRectangleAnnotate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;tsmiTrayRectangleLight.Name" xml:space="preserve">
     <value>tsmiTrayRectangleLight</value>
   </data>
@@ -2371,18 +2545,6 @@
     <value>tsmiTrayRectangleTransparent</value>
   </data>
   <data name="&gt;&gt;tsmiTrayRectangleTransparent.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmiTrayPolygon.Name" xml:space="preserve">
-    <value>tsmiTrayPolygon</value>
-  </data>
-  <data name="&gt;&gt;tsmiTrayPolygon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tsmiTrayFreeHand.Name" xml:space="preserve">
-    <value>tsmiTrayFreeHand</value>
-  </data>
-  <data name="&gt;&gt;tsmiTrayFreeHand.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tsmiTrayLastRegion.Name" xml:space="preserve">
@@ -2413,6 +2575,12 @@
     <value>tsmiTrayWebpageCapture</value>
   </data>
   <data name="&gt;&gt;tsmiTrayWebpageCapture.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tsmiTrayTextCapture.Name" xml:space="preserve">
+    <value>tsmiTrayTextCapture</value>
+  </data>
+  <data name="&gt;&gt;tsmiTrayTextCapture.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tsmiTrayAutoCapture.Name" xml:space="preserve">
@@ -2757,10 +2925,16 @@
   <data name="&gt;&gt;timerTraySingleClick.Type" xml:space="preserve">
     <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;ttMain.Name" xml:space="preserve">
+    <value>ttMain</value>
+  </data>
+  <data name="&gt;&gt;ttMain.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>MainForm</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>ShareX.HotkeyForm, ShareX, Version=10.6.0.0, Culture=neutral, PublicKeyToken=null</value>
+    <value>ShareX.HotkeyForm, ShareX, Version=11.2.1.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

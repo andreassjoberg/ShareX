@@ -28,6 +28,23 @@ using System.ComponentModel;
 
 namespace ShareX.UploadersLib.TextUploaders
 {
+    public class SlexyTextUploaderService : TextUploaderService
+    {
+        public override TextDestination EnumValue { get; } = TextDestination.Slexy;
+
+        public override bool CheckConfig(UploadersConfig config) => true;
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            SlexySettings settings = new SlexySettings()
+            {
+                TextFormat = taskInfo.TextFormat
+            };
+
+            return new Slexy(settings);
+        }
+    }
+
     public sealed class Slexy : TextUploader
     {
         private const string APIURL = "http://slexy.org/index.php/submit";

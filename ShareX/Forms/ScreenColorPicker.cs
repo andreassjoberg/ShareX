@@ -25,6 +25,7 @@
 
 using ShareX.HelpersLib;
 using ShareX.Properties;
+using ShareX.ScreenCaptureLib;
 using System;
 using System.Drawing;
 using System.Threading;
@@ -58,7 +59,7 @@ namespace ShareX
 
         private void CopyToClipboard(object sender, EventArgs e)
         {
-            string text = string.Empty;
+            string text = "";
 
             if (sender is NumericUpDown)
             {
@@ -106,7 +107,7 @@ namespace ShareX
 
         private void btnColorPicker_Click(object sender, EventArgs e)
         {
-            if (!colorTimer.Enabled) SetCurrentColor(NewColor);
+            if (!colorTimer.Enabled) SetCurrentColor(NewColor, true);
             UpdateControls(!colorTimer.Enabled);
         }
 
@@ -114,13 +115,14 @@ namespace ShareX
         {
             try
             {
-                SetCurrentColor(NewColor);
+                SetCurrentColor(NewColor, true);
                 UpdateControls(false);
 
                 Hide();
                 Thread.Sleep(250);
 
-                PointInfo pointInfo = TaskHelpers.SelectPointColor();
+                TaskSettings taskSettings = TaskSettings.GetDefaultTaskSettings();
+                PointInfo pointInfo = RegionCaptureTasks.GetPointInfo(taskSettings.CaptureSettings.SurfaceOptions);
 
                 if (pointInfo != null)
                 {
@@ -129,15 +131,8 @@ namespace ShareX
             }
             finally
             {
-                this.ShowActivate();
+                this.ForceActivate();
             }
-        }
-
-        private void btnCopyAll_Click(object sender, EventArgs e)
-        {
-            string colors = colorPicker.SelectedColor.ToString();
-            colors += "\r\n" + string.Format(Resources.ScreenColorPicker_btnCopyAll_Click_Cursor_position, txtX.Text, txtY.Text);
-            ClipboardHelpers.CopyText(colors);
         }
 
         private void colorTimer_Tick(object sender, EventArgs e)
@@ -151,10 +146,52 @@ namespace ShareX
             if (e.KeyCode == Keys.ControlKey && !txtHex.Focused)
             {
                 btnColorPicker.Focus();
-                if (!colorTimer.Enabled) SetCurrentColor(NewColor);
+                if (!colorTimer.Enabled) SetCurrentColor(NewColor, true);
                 UpdateControls(!colorTimer.Enabled);
                 e.SuppressKeyPress = true;
             }
+        }
+
+        private void tsmiCopyAll_Click(object sender, EventArgs e)
+        {
+            string colors = colorPicker.SelectedColor.ToString();
+            colors += Environment.NewLine + string.Format(Resources.ScreenColorPicker_btnCopyAll_Click_Cursor_position, txtX.Text, txtY.Text);
+            ClipboardHelpers.CopyText(colors);
+        }
+
+        private void tsmiCopyRGB_Click(object sender, EventArgs e)
+        {
+            RGBA rgba = colorPicker.SelectedColor.RGBA;
+            ClipboardHelpers.CopyText($"{rgba.Red}, {rgba.Green}, {rgba.Blue}");
+        }
+
+        private void tsmiCopyHex_Click(object sender, EventArgs e)
+        {
+            string hex = ColorHelpers.ColorToHex(colorPicker.SelectedColor, ColorFormat.RGB);
+            ClipboardHelpers.CopyText("#" + hex);
+        }
+
+        private void tsmiCopyHSB_Click(object sender, EventArgs e)
+        {
+            HSB hsb = colorPicker.SelectedColor.HSB;
+            ClipboardHelpers.CopyText($"{hsb.Hue360:0.0}°, {hsb.Saturation100:0.0}%, {hsb.Brightness100:0.0}%");
+        }
+
+        private void tsmiCopyCMYK_Click(object sender, EventArgs e)
+        {
+            CMYK cmyk = colorPicker.SelectedColor.CMYK;
+            ClipboardHelpers.CopyText($"{cmyk.Cyan100:0.0}%, {cmyk.Magenta100:0.0}%, {cmyk.Yellow100:0.0}%, {cmyk.Key100:0.0}%");
+        }
+
+        private void tsmiCopyDecimal_Click(object sender, EventArgs e)
+        {
+            int dec = ColorHelpers.ColorToDecimal(colorPicker.SelectedColor, ColorFormat.RGB);
+            ClipboardHelpers.CopyText(dec.ToString());
+        }
+
+        private void tsmiCopyPosition_Click(object sender, EventArgs e)
+        {
+            ClipboardHelpers.CopyText($"{txtX.Text}, {txtY.Text}");
         }
     }
 }

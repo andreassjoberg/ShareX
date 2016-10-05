@@ -33,7 +33,7 @@ using System.Windows.Forms;
 
 namespace ShareX.MediaLib
 {
-    public partial class VideoThumbnailerForm : BaseForm
+    public partial class VideoThumbnailerForm : Form
     {
         public event Action<List<VideoThumbnailInfo>> ThumbnailsTaken;
 
@@ -45,7 +45,8 @@ namespace ShareX.MediaLib
             FFmpegPath = ffmpegPath;
             Options = options;
             InitializeComponent();
-            txtMediaPath.Text = Options.LastVideoPath ?? string.Empty;
+            Icon = ShareXResources.Icon;
+            txtMediaPath.Text = Options.LastVideoPath ?? "";
             pgOptions.SelectedObject = Options;
         }
 

@@ -26,12 +26,14 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ShareX.HelpersLib;
-using ShareX.UploadersLib.HelperClasses;
+using ShareX.UploadersLib.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.ImageUploaders
 {
@@ -49,6 +51,44 @@ namespace ShareX.UploadersLib.ImageUploaders
         Large_Thumbnail,
         [Description("Huge thumbnail")]
         Huge_Thumbnail
+    }
+
+    public class ImgurImageUploaderService : ImageUploaderService
+    {
+        public override ImageDestination EnumValue { get; } = ImageDestination.Imgur;
+
+        public override Icon ServiceIcon => Resources.Imgur;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return config.ImgurAccountType == AccountType.Anonymous || OAuth2Info.CheckOAuth(config.ImgurOAuth2Info);
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            if (config.ImgurOAuth2Info == null)
+            {
+                config.ImgurOAuth2Info = new OAuth2Info(APIKeys.ImgurClientID, APIKeys.ImgurClientSecret);
+            }
+
+            string albumID = null;
+
+            if (config.ImgurUploadSelectedAlbum && config.ImgurSelectedAlbum != null)
+            {
+                albumID = config.ImgurSelectedAlbum.id;
+            }
+
+            return new Imgur(config.ImgurOAuth2Info)
+            {
+                UploadMethod = config.ImgurAccountType,
+                DirectLink = config.ImgurDirectLink,
+                ThumbnailType = config.ImgurThumbnailType,
+                UseGIFV = config.ImgurUseGIFV,
+                UploadAlbumID = albumID
+            };
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpImgur;
     }
 
     public sealed class Imgur : ImageUploader, IOAuth2
@@ -238,7 +278,7 @@ namespace ShareX.UploadersLib.ImageUploaders
                                 result.URL = "http://imgur.com/" + imageData.id;
                             }
 
-                            string thumbnail = string.Empty;
+                            string thumbnail = "";
 
                             switch (ThumbnailType)
                             {

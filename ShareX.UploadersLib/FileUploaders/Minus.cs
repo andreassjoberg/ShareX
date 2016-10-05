@@ -25,13 +25,34 @@
 
 using Newtonsoft.Json;
 using ShareX.HelpersLib;
-using ShareX.UploadersLib.HelperClasses;
+using ShareX.UploadersLib.Properties;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class MinusFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.Minus;
+
+        public override Icon ServiceIcon => Resources.Minus;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return config.MinusConfig != null && config.MinusConfig.MinusUser != null;
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new Minus(config.MinusConfig, config.MinusOAuth2Info);
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpMinus;
+    }
+
     public class Minus : FileUploader
     {
         private const string URL_HOST = "https://minus.com";

@@ -23,6 +23,7 @@
 
 #endregion License Information (GPL v3)
 
+using ShareX.HelpersLib;
 using ShareX.HelpersLib.Properties;
 using System;
 using System.Drawing;
@@ -30,7 +31,7 @@ using System.Windows.Forms;
 
 namespace ShareX.HelpersLib
 {
-    public partial class PrintForm : BaseForm
+    public partial class PrintForm : Form
     {
         private PrintHelper printHelper;
         private PrintSettings printSettings;
@@ -38,16 +39,13 @@ namespace ShareX.HelpersLib
         public PrintForm(Image img, PrintSettings settings, bool previewOnly = false)
         {
             InitializeComponent();
+            Icon = ShareXResources.Icon;
             printHelper = new PrintHelper(img);
             printHelper.Settings = printSettings = settings;
             btnPrint.Enabled = !previewOnly;
             LoadSettings();
         }
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -66,9 +64,14 @@ namespace ShareX.HelpersLib
             base.Dispose(disposing);
         }
 
+        private void PrintForm_Shown(object sender, EventArgs e)
+        {
+            this.ForceActivate();
+        }
+
         private void LoadSettings()
         {
-            nudMargin.Value = printSettings.Margin;
+            nudMargin.SetValue(printSettings.Margin);
             cbAutoRotate.Checked = printSettings.AutoRotateImage;
             cbAutoScale.Checked = printSettings.AutoScaleImage;
             cbAllowEnlarge.Checked = printSettings.AllowEnlargeImage;
@@ -84,6 +87,7 @@ namespace ShareX.HelpersLib
         private void btnPrint_Click(object sender, EventArgs e)
         {
             printHelper.Print();
+
             DialogResult = DialogResult.OK;
             Close();
         }

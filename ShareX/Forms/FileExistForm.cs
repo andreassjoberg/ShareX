@@ -27,10 +27,11 @@ using ShareX.HelpersLib;
 using ShareX.Properties;
 using System;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ShareX
 {
-    public partial class FileExistForm : BaseForm
+    public partial class FileExistForm : Form
     {
         public string Filepath { get; private set; }
 
@@ -40,6 +41,7 @@ namespace ShareX
         public FileExistForm(string filepath)
         {
             InitializeComponent();
+            Icon = ShareXResources.Icon;
 
             Filepath = filepath;
             filename = Path.GetFileNameWithoutExtension(Filepath);
@@ -51,7 +53,7 @@ namespace ShareX
 
         private void FileExistForm_Shown(object sender, EventArgs e)
         {
-            this.ShowActivate();
+            this.ForceActivate();
         }
 
         private string GetNewFilename()
@@ -63,7 +65,7 @@ namespace ShareX
                 return newFilename + Path.GetExtension(Filepath);
             }
 
-            return string.Empty;
+            return "";
         }
 
         private void btnNewName_Click(object sender, EventArgs e)
@@ -97,7 +99,7 @@ namespace ShareX
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            Filepath = string.Empty;
+            Filepath = "";
             Close();
         }
     }

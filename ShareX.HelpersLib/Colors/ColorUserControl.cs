@@ -28,7 +28,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Windows.Forms;
 
 namespace ShareX.HelpersLib
@@ -156,10 +155,7 @@ namespace ShareX.HelpersLib
         {
             if (this is ColorBox)
             {
-                using (MemoryStream cursorStream = new MemoryStream(Resources.Crosshair))
-                {
-                    Cursor = new Cursor(cursorStream);
-                }
+                Cursor = Helpers.CreateCursor(Resources.Crosshair);
             }
         }
 

@@ -27,9 +27,9 @@ using ShareX.HelpersLib;
 using System;
 using System.Windows.Forms;
 
-namespace ShareX.UploadersLib.GUI
+namespace ShareX.UploadersLib
 {
-    public partial class EmailForm : BaseForm
+    public partial class EmailForm : Form
     {
         public string ToEmail { get; private set; }
         public string Subject { get; private set; }
@@ -38,14 +38,19 @@ namespace ShareX.UploadersLib.GUI
         public EmailForm()
         {
             InitializeComponent();
+            Icon = ShareXResources.Icon;
         }
 
-        public EmailForm(string toEmail, string subject, string body)
-            : this()
+        public EmailForm(string toEmail, string subject, string body) : this()
         {
             txtToEmail.Text = toEmail;
             txtSubject.Text = subject;
             txtMessage.Text = body;
+        }
+
+        private void EmailForm_Shown(object sender, EventArgs e)
+        {
+            txtMessage.Focus();
         }
 
         private void btnSend_Click(object sender, EventArgs e)
@@ -53,12 +58,15 @@ namespace ShareX.UploadersLib.GUI
             ToEmail = txtToEmail.Text;
             Subject = txtSubject.Text;
             Body = txtMessage.Text;
+
             DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

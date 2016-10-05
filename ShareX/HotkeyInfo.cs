@@ -118,21 +118,19 @@ namespace ShareX
             Status = HotkeyStatus.NotConfigured;
         }
 
-        public HotkeyInfo(Keys hotkey)
-            : this()
+        public HotkeyInfo(Keys hotkey) : this()
         {
             Hotkey = hotkey;
         }
 
-        public HotkeyInfo(Keys hotkey, ushort id)
-            : this(hotkey)
+        public HotkeyInfo(Keys hotkey, ushort id) : this(hotkey)
         {
             ID = id;
         }
 
         public override string ToString()
         {
-            string text = string.Empty;
+            string text = "";
 
             if (Control)
             {

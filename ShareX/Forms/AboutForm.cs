@@ -32,11 +32,12 @@ using System.Windows.Forms;
 
 namespace ShareX
 {
-    public partial class AboutForm : BaseForm
+    public partial class AboutForm : Form
     {
         public AboutForm()
         {
             InitializeComponent();
+            Icon = ShareXResources.Icon;
             lblProductName.Text = Program.Title;
             pbLogo.Image = ShareXResources.Logo;
 
@@ -49,9 +50,10 @@ namespace ShareX
             pbSteam.Visible = false;
             lblSteamBuild.Visible = false;
 
-            if (!Program.IsPortableApps)
+            if (!Program.PortableApps)
             {
-                uclUpdate.CheckUpdate(TaskHelpers.CheckUpdate);
+                UpdateChecker updateChecker = UpdateManager.CreateUpdateChecker();
+                uclUpdate.CheckUpdate(updateChecker);
             }
             else
             {
@@ -72,20 +74,7 @@ Resources.AboutForm_AboutForm_Changelog, Links.URL_CHANGELOG);
 
             rtbCredits.Text = string.Format(@"{0}:
 
-Mega, Gist and Jira support: https://github.com/gpailler
-Web site: https://github.com/dmxt
-Amazon S3 and DreamObjects support: https://github.com/alanedwardes
-Gfycat support: https://github.com/Dinnerbone
-Copy support: https://github.com/KamilKZ
-AdFly support: https://github.com/LRNAB
-MediaFire support: https://github.com/michalx2
-Pushbullet support: https://github.com/BallisticLingonberries
-Lambda support: https://github.com/mstojcevich
-VideoBin support: https://github.com/corey-/
-Up1 support: https://github.com/Upload
-CoinURL, QRnet, VURL, 2gp, SomeImage, OneTimeSecret, Polr support: https://github.com/DanielMcAssey
-Seafile support: https://github.com/zikeji
-Streamable support: https://github.com/streamablevideo
+https://github.com/ShareX/ShareX/graphs/contributors
 
 {1}:
 
@@ -103,9 +92,9 @@ Russian: https://github.com/L1Q
 
 {2}:
 
-Greenshot Image Editor: https://bitbucket.org/greenshot/greenshot
+Greenshot Image Editor: https://github.com/greenshot/greenshot
 Json.NET: https://github.com/JamesNK/Newtonsoft.Json
-SSH.NET: https://sshnet.codeplex.com
+SSH.NET: https://github.com/sshnet/SSH.NET
 Icons: http://p.yusukekamiyamane.com
 ImageListView: https://github.com/oozcitak/imagelistview
 FFmpeg: http://www.ffmpeg.org
@@ -116,20 +105,15 @@ DirectShow video and audio device: https://github.com/rdp/screen-capture-recorde
 QrCode.Net: https://qrcodenet.codeplex.com
 System.Net.FtpClient: https://netftp.codeplex.com
 AWS SDK: http://aws.amazon.com/sdk-for-net/
-CLR Security: http://clrsecurity.codeplex.com
 Steamworks.NET: https://github.com/rlabrecque/Steamworks.NET
+OCR Space: http://ocr.space
 
-Trailer music credits: Track Name: Au5 - Inside (feat. Danyka Nadeau), Video Link: https://youtu.be/WrkyT-6ivjc, Buy Link: http://music.monstercat.com/track/inside-feat-danyka-nadeau, Label Channel: http://www.YouTube.com/Monstercat
-
-Running from:
-{3}
-
-Copyright (c) 2007-2016 ShareX Team", Resources.AboutForm_AboutForm_Contributors, Resources.AboutForm_AboutForm_Translators, Resources.AboutForm_AboutForm_External_libraries, Application.ExecutablePath);
+Copyright (c) 2007-2016 ShareX Team", Resources.AboutForm_AboutForm_Contributors, Resources.AboutForm_AboutForm_Translators, Resources.AboutForm_AboutForm_External_libraries);
         }
 
         private void AboutForm_Shown(object sender, EventArgs e)
         {
-            this.ShowActivate();
+            this.ForceActivate();
         }
 
         private void pbLogo_MouseDown(object sender, MouseEventArgs e)
@@ -158,9 +142,19 @@ Copyright (c) 2007-2016 ShareX Team", Resources.AboutForm_AboutForm_Contributors
             URLHelpers.OpenURL(e.LinkText);
         }
 
-        private void AboutForm_FormClosed(object sender, FormClosedEventArgs e)
+        private void btnShareXLicense_Click(object sender, EventArgs e)
         {
-            CompanionCubeManager.Stop();
+            Helpers.OpenFile(Helpers.GetAbsolutePath("Licenses\\ShareX_license.txt"));
+        }
+
+        private void btnLicenses_Click(object sender, EventArgs e)
+        {
+            Helpers.OpenFolder(Helpers.GetAbsolutePath("Licenses"));
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
         #region Animation
@@ -245,20 +239,6 @@ Copyright (c) 2007-2016 ShareX Team", Resources.AboutForm_AboutForm_Contributors
 
         private void cLogo_MouseDown(object sender, MouseEventArgs e)
         {
-#if STEAM
-            if (e.Button == MouseButtons.Middle)
-            {
-                cLogo.Stop();
-                CompanionCubeManager.Toggle();
-                return;
-            }
-
-            if (CompanionCubeManager.IsActive)
-            {
-                CompanionCubeManager.Stop();
-            }
-#endif
-
             if (!isEasterEggStarted)
             {
                 isPaused = !isPaused;

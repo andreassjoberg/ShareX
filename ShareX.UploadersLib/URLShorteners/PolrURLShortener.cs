@@ -26,10 +26,36 @@
 // Credits: https://github.com/DanielMcAssey
 
 using ShareX.HelpersLib;
+using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.URLShorteners
 {
+    public class PolrURLShortenerService : URLShortenerService
+    {
+        public override UrlShortenerType EnumValue { get; } = UrlShortenerType.Polr;
+
+        public override Icon ServiceIcon => Resources.Polr;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return !string.IsNullOrEmpty(config.PolrAPIKey);
+        }
+
+        public override URLShortener CreateShortener(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new PolrURLShortener
+            {
+                API_HOST = config.PolrAPIHostname,
+                API_KEY = config.PolrAPIKey
+            };
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpPolr;
+    }
+
     public sealed class PolrURLShortener : URLShortener
     {
         public string API_HOST { get; set; }

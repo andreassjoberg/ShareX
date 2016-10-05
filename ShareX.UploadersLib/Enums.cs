@@ -40,7 +40,7 @@ namespace ShareX.UploadersLib
         Flickr,
         [Description("Photobucket")]
         Photobucket,
-        [Description("Picasa")]
+        [Description("Google Photos (Picasa)")]
         Picasa,
         [Description("Twitter")]
         Twitter,
@@ -50,6 +50,10 @@ namespace ShareX.UploadersLib
         Vgyme,
         [Description("SomeImage")]
         SomeImage,
+        [Description("Imgland")]
+        Imgland,
+        [Description("SLiMG")]
+        Slimg,
         CustomImageUploader, // Localized
         FileUploader // Localized
     }
@@ -90,8 +94,8 @@ namespace ShareX.UploadersLib
         OneDrive,
         [Description("Google Drive")]
         GoogleDrive,
-        [Description("Copy")]
-        Copy,
+        [Description("puush")]
+        Puush,
         [Description("Box")]
         Box,
         [Description("MEGA")]
@@ -126,14 +130,18 @@ namespace ShareX.UploadersLib
         Uguu,
         [Description("Dropfile")]
         Dropfile,
-        [Description("Up1")]
-        Up1,
         [Description("Seafile")]
         Seafile,
-        [Description("s-ul")]
-        Sul,
         [Description("Streamable")]
         Streamable,
+        [Description("s-ul")]
+        Sul,
+        [Description("Lithiio")]
+        Lithiio,
+        [Description("transfer.sh")]
+        Transfersh,
+        [Description("Uplea")]
+        Uplea,
         SharedFolder, // Localized
         Email, // Localized
         CustomFileUploader // Localized
@@ -156,8 +164,6 @@ namespace ShareX.UploadersLib
         TURL,
         [Description("yourls.org")]
         YOURLS,
-        [Description("nl.cm")]
-        NLCM,
         [Description("adf.ly")]
         AdFly,
         [Description("coinurl.com")]

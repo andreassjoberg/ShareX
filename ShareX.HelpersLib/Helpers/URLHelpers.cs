@@ -142,7 +142,7 @@ namespace ShareX.HelpersLib
 
             if (url1Empty && url2Empty)
             {
-                return string.Empty;
+                return "";
             }
 
             if (url1Empty)
@@ -283,6 +283,20 @@ namespace ShareX.HelpersLib
             return path;
         }
 
+        public static bool IsFileURL(string url)
+        {
+            int index = url.LastIndexOf('/');
+
+            if (index < 0)
+            {
+                return false;
+            }
+
+            string path = url.Substring(index + 1);
+
+            return !string.IsNullOrEmpty(path) && path.Contains(".");
+        }
+
         public static string GetDirectoryPath(string path)
         {
             if (path.Contains("/"))
@@ -296,7 +310,7 @@ namespace ShareX.HelpersLib
         public static List<string> GetPaths(string path)
         {
             List<string> result = new List<string>();
-            string temp = string.Empty;
+            string temp = "";
             string[] dirs = path.Split('/');
             foreach (string dir in dirs)
             {
@@ -310,28 +324,28 @@ namespace ShareX.HelpersLib
             return result;
         }
 
-        private static readonly string[] URLPrefixes = new string[] { "http://", "https://", "ftp://", "ftps://", "file://" };
+        private static readonly string[] URLPrefixes = new string[] { "http://", "https://", "ftp://", "ftps://", "file://", "//" };
 
         public static bool HasPrefix(string url)
         {
             return URLPrefixes.Any(x => url.StartsWith(x, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public static string FixPrefix(string url)
+        public static string FixPrefix(string url, string prefix = "http://")
         {
-            if (!HasPrefix(url))
+            if (!string.IsNullOrEmpty(url) && !HasPrefix(url))
             {
-                return "http://" + url;
+                return prefix + url;
             }
 
             return url;
         }
 
-        public static string ForceHTTPS(string url)
+        public static string ForcePrefix(string url, string prefix = "https://")
         {
-            if (!string.IsNullOrEmpty(url) && url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(url))
             {
-                return "https://" + url.Substring(7);
+                url = prefix + RemovePrefixes(url);
             }
 
             return url;
@@ -345,6 +359,28 @@ namespace ShareX.HelpersLib
                 {
                     url = url.Remove(0, prefix.Length);
                     break;
+                }
+            }
+
+            return url;
+        }
+
+        public static string GetShortURL(string url)
+        {
+            Uri uri;
+
+            if (Uri.TryCreate(url, UriKind.Absolute, out uri))
+            {
+                string host = uri.Host;
+
+                if (!string.IsNullOrEmpty(host))
+                {
+                    if (host.StartsWith("www.", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        host = host.Substring(4);
+                    }
+
+                    return host;
                 }
             }
 

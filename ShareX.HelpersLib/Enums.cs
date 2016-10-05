@@ -27,18 +27,6 @@ using System.ComponentModel;
 
 namespace ShareX.HelpersLib
 {
-    // http://en.wikipedia.org/wiki/List_of_file_formats
-
-    public enum ImageFileExtensions
-    {
-        jpg, jpeg, png, gif, bmp, ico, tif, tiff
-    }
-
-    public enum TextFileExtensions
-    {
-        txt, log, nfo, c, cpp, cc, cxx, h, hpp, hxx, cs, vb, html, htm, xhtml, xht, xml, css, js, php, bat, java, lua, py, pl, cfg, ini
-    }
-
     public enum EDataType
     {
         Default,
@@ -68,14 +56,6 @@ namespace ShareX.HelpersLib
         BMP,
         [Description("tif")]
         TIFF
-    }
-
-    public enum TriangleAngle
-    {
-        Top,
-        Right,
-        Bottom,
-        Left
     }
 
     public enum HashType
@@ -184,5 +164,11 @@ namespace ShareX.HelpersLib
     {
         Prefix,
         Suffix
+    }
+
+    public enum ScreenTearingTestMode
+    {
+        VerticalLines,
+        HorizontalLines
     }
 }

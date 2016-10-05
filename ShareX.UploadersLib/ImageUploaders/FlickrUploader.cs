@@ -24,15 +24,37 @@
 #endregion License Information (GPL v3)
 
 using ShareX.HelpersLib;
+using ShareX.UploadersLib.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace ShareX.UploadersLib.ImageUploaders
 {
+    public class FlickrImageUploaderService : ImageUploaderService
+    {
+        public override ImageDestination EnumValue { get; } = ImageDestination.Flickr;
+
+        public override Icon ServiceIcon => Resources.Flickr;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return !string.IsNullOrEmpty(config.FlickrAuthInfo.Token);
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new FlickrUploader(APIKeys.FlickrKey, APIKeys.FlickrSecret, config.FlickrAuthInfo, config.FlickrSettings);
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpFlickr;
+    }
+
     public class FlickrUploader : ImageUploader
     {
         private string API_Key, API_Secret;
@@ -50,8 +72,7 @@ namespace ShareX.UploadersLib.ImageUploaders
             API_Secret = secret;
         }
 
-        public FlickrUploader(string key, string secret, FlickrAuthInfo auth, FlickrSettings settings)
-            : this(key, secret)
+        public FlickrUploader(string key, string secret, FlickrAuthInfo auth, FlickrSettings settings) : this(key, secret)
         {
             Auth = auth;
             Settings = settings;

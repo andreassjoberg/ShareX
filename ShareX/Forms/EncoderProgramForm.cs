@@ -30,12 +30,11 @@ using System.Windows.Forms;
 
 namespace ShareX
 {
-    public partial class EncoderProgramForm : BaseForm
+    public partial class EncoderProgramForm : Form
     {
         public VideoEncoder encoder { get; private set; }
 
-        public EncoderProgramForm()
-            : this(new VideoEncoder())
+        public EncoderProgramForm() : this(new VideoEncoder())
         {
         }
 
@@ -43,6 +42,7 @@ namespace ShareX
         {
             this.encoder = encoder;
             InitializeComponent();
+            Icon = ShareXResources.Icon;
             txtName.Text = encoder.Name ?? "";
             txtPath.Text = encoder.Path ?? "";
             txtArguments.Text = encoder.Args ?? "";
@@ -74,11 +74,13 @@ namespace ShareX
             encoder.OutputExtension = txtExtension.Text;
 
             DialogResult = DialogResult.OK;
+            Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

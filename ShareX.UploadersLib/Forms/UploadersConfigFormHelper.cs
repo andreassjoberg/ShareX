@@ -25,8 +25,6 @@
 
 using ShareX.HelpersLib;
 using ShareX.UploadersLib.FileUploaders;
-using ShareX.UploadersLib.Forms;
-using ShareX.UploadersLib.HelperClasses;
 using ShareX.UploadersLib.ImageUploaders;
 using ShareX.UploadersLib.Properties;
 using ShareX.UploadersLib.TextUploaders;
@@ -434,20 +432,6 @@ namespace ShareX.UploadersLib
 
         #region Dropbox
 
-        public void DropboxOpenFiles()
-        {
-            if (OAuth2Info.CheckOAuth(Config.DropboxOAuth2Info))
-            {
-                using (DropboxFilesForm filesForm = new DropboxFilesForm(Config.DropboxOAuth2Info, GetDropboxUploadPath(), Config.DropboxAccountInfo))
-                {
-                    if (filesForm.ShowDialog() == DialogResult.OK)
-                    {
-                        txtDropboxPath.Text = filesForm.CurrentFolderPath;
-                    }
-                }
-            }
-        }
-
         public void DropboxAuthOpen()
         {
             try
@@ -484,7 +468,7 @@ namespace ShareX.UploadersLib
 
                     if (result)
                     {
-                        Config.DropboxAccountInfo = dropbox.GetAccountInfo();
+                        Config.DropboxAccountInfo = dropbox.GetCurrentAccountAPIv1();
                         UpdateDropboxStatus();
 
                         oauth2Dropbox.Status = OAuthLoginStatus.LoginSuccessful;
@@ -525,121 +509,20 @@ namespace ShareX.UploadersLib
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine(Resources.UploadersConfigForm_UpdateDropboxStatus_Email_ + " " + Config.DropboxAccountInfo.Email);
                 sb.AppendLine(Resources.UploadersConfigForm_UpdateDropboxStatus_Name_ + " " + Config.DropboxAccountInfo.Display_name);
-                sb.AppendLine(Resources.UploadersConfigForm_UpdateDropboxStatus_User_ID_ + " " + Config.DropboxAccountInfo.Uid.ToString());
-                string uploadPath = GetDropboxUploadPath();
+                sb.AppendLine(Resources.UploadersConfigForm_UpdateDropboxStatus_User_ID_ + " " + Config.DropboxAccountInfo.Uid);
+                string uploadPath = NameParser.Parse(NameParserType.URL, Dropbox.VerifyPath(Config.DropboxUploadPath));
                 sb.AppendLine(Resources.UploadersConfigForm_UpdateDropboxStatus_Upload_path_ + " " + uploadPath);
-                sb.AppendLine(Resources.UploadersConfigForm_UpdateDropboxStatus_Download_path_ + " " + Dropbox.GetPublicURL(Config.DropboxAccountInfo.Uid, uploadPath + "Example.png"));
+                sb.AppendLine(Resources.UploadersConfigForm_UpdateDropboxStatus_Download_path_ + " " +
+                    Dropbox.GetPublicURL(Config.DropboxAccountInfo.Uid.ToString(), URLHelpers.CombineURL(uploadPath, "Example.png")));
                 lblDropboxStatus.Text = sb.ToString();
-                btnDropboxShowFiles.Enabled = true;
             }
             else
             {
-                lblDropboxStatus.Text = string.Empty;
+                lblDropboxStatus.Text = "";
             }
-        }
-
-        private string GetDropboxUploadPath()
-        {
-            return NameParser.Parse(NameParserType.URL, Dropbox.TidyUploadPath(Config.DropboxUploadPath));
         }
 
         #endregion Dropbox
-
-        #region Copy
-
-        public void CopyAuthOpen()
-        {
-            try
-            {
-                OAuthInfo oauth = new OAuthInfo(APIKeys.CopyConsumerKey, APIKeys.CopyConsumerSecret);
-
-                string url = new Copy(oauth).GetAuthorizationURL();
-
-                if (!string.IsNullOrEmpty(url))
-                {
-                    Config.CopyOAuthInfo = oauth;
-                    URLHelpers.OpenURL(url);
-                    DebugHelper.WriteLine("CopyAuthOpen - Authorization URL is opened: " + url);
-                }
-                else
-                {
-                    DebugHelper.WriteLine("CopyAuthOpen - Authorization URL is empty.");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), Resources.UploadersConfigForm_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        public void CopyAuthComplete(string code)
-        {
-            try
-            {
-                if (Config.CopyOAuthInfo != null && !string.IsNullOrEmpty(Config.CopyOAuthInfo.AuthToken) && !string.IsNullOrEmpty(Config.CopyOAuthInfo.AuthSecret) && !string.IsNullOrEmpty(code))
-                {
-                    Copy copy = new Copy(Config.CopyOAuthInfo);
-                    bool result = copy.GetAccessToken(code);
-
-                    if (result)
-                    {
-                        Config.CopyAccountInfo = copy.GetAccountInfo();
-                        UpdateCopyStatus();
-
-                        oAuthCopy.Status = OAuthLoginStatus.LoginSuccessful;
-
-                        if (Config.CopyAccountInfo != null)
-                        {
-                            MessageBox.Show(Resources.UploadersConfigForm_Login_successful, "ShareX", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            MessageBox.Show(Resources.UploadersConfigForm_DropboxAuthComplete_Login_successful_but_getting_account_info_failed_, "ShareX",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-
-                        return;
-                    }
-                    else
-                    {
-                        oAuthCopy.Status = OAuthLoginStatus.LoginFailed;
-                        MessageBox.Show(Resources.UploadersConfigForm_Login_failed, "ShareX", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                }
-
-                Config.CopyOAuthInfo = null;
-                UpdateCopyStatus();
-            }
-            catch (Exception ex)
-            {
-                DebugHelper.WriteException(ex);
-                MessageBox.Show(ex.ToString(), "ShareX - " + Resources.UploadersConfigForm_Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void UpdateCopyStatus()
-        {
-            if (OAuthInfo.CheckOAuth(Config.CopyOAuthInfo) && Config.CopyAccountInfo != null)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine(Resources.UploadersConfigForm_UpdateDropboxStatus_Email_ + " " + Config.CopyAccountInfo.email);
-                sb.AppendLine(Resources.UploadersConfigForm_UpdateDropboxStatus_Name_ + " " + Config.CopyAccountInfo.first_name + " " + Config.CopyAccountInfo.last_name);
-                sb.AppendLine(Resources.UploadersConfigForm_UpdateDropboxStatus_User_ID_ + " " + Config.CopyAccountInfo.id.ToString());
-                sb.AppendLine(Resources.UploadersConfigForm_UpdateDropboxStatus_Upload_path_ + " " + GetCopyUploadPath());
-                lblCopyStatus.Text = sb.ToString();
-            }
-            else
-            {
-                lblCopyStatus.Text = string.Empty;
-            }
-        }
-
-        private string GetCopyUploadPath()
-        {
-            return NameParser.Parse(NameParserType.URL, Copy.TidyUploadPath(Config.CopyUploadPath));
-        }
-
-        #endregion Copy
 
         #region Amazon S3
 
@@ -741,11 +624,11 @@ namespace ShareX.UploadersLib
 
                 if (OAuth2Info.CheckOAuth(Config.GoogleDriveOAuth2Info))
                 {
-                    var folders = new GoogleDrive(Config.GoogleDriveOAuth2Info).GetFolders();
+                    List<GoogleDriveFile> folders = new GoogleDrive(Config.GoogleDriveOAuth2Info).GetFolders();
 
                     if (folders != null)
                     {
-                        foreach (var folder in folders)
+                        foreach (GoogleDriveFile folder in folders)
                         {
                             ListViewItem lvi = new ListViewItem(folder.title);
                             lvi.SubItems.Add(folder.description);
@@ -1163,7 +1046,7 @@ namespace ShareX.UploadersLib
 
         public static void TestFTPAccount(FTPAccount account)
         {
-            string msg = string.Empty;
+            string msg = "";
             string remotePath = account.GetSubFolderPath();
             List<string> directories = new List<string>();
 
@@ -1380,7 +1263,7 @@ namespace ShareX.UploadersLib
             }
 
             txtTwitterDescription.Enabled = false;
-            txtTwitterDescription.Text = string.Empty;
+            txtTwitterDescription.Text = "";
             oauthTwitter.Enabled = false;
             return false;
         }
@@ -1428,7 +1311,7 @@ namespace ShareX.UploadersLib
 
                         if (result)
                         {
-                            oauth.AuthVerifier = string.Empty;
+                            oauth.AuthVerifier = "";
                             oauthTwitter.Status = OAuthLoginStatus.LoginSuccessful;
                             MessageBox.Show(Resources.UploadersConfigForm_Login_successful, "ShareX", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
@@ -2000,7 +1883,7 @@ namespace ShareX.UploadersLib
             try
             {
                 OAuth2Info oauth = new OAuth2Info(APIKeys.GitHubID, APIKeys.GitHubSecret);
-                string url = new Gist(oauth).GetAuthorizationURL();
+                string url = new GitHubGist(oauth).GetAuthorizationURL();
 
                 if (!string.IsNullOrEmpty(url))
                 {
@@ -2020,7 +1903,7 @@ namespace ShareX.UploadersLib
             {
                 if (!string.IsNullOrEmpty(code) && Config.GistOAuth2Info != null)
                 {
-                    bool result = new Gist(Config.GistOAuth2Info).GetAccessToken(code);
+                    bool result = new GitHubGist(Config.GistOAuth2Info).GetAccessToken(code);
 
                     if (result)
                     {

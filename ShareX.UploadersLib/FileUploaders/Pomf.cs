@@ -33,33 +33,52 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class PomfFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.Pomf;
+
+        public override Icon ServiceIcon => Resources.Pomf;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return config.PomfUploader != null && !string.IsNullOrEmpty(config.PomfUploader.UploadURL);
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new Pomf(config.PomfUploader);
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpPomf;
+    }
+
     public class Pomf : FileUploader
     {
         // Pomf clones: https://docs.google.com/spreadsheets/d/1kh1TZdtyX7UlRd55OBxf7DB-JGj2rsfWckI0FPQRYhE
         public static List<PomfUploader> Uploaders = new List<PomfUploader>()
         {
-            new PomfUploader("http://1339.cf/upload.php", "http://b.1339.cf"),
-            new PomfUploader("http://catgirlsare.sexy/upload.php"),
+            //new PomfUploader("https://pomf.se/upload.php"),
             new PomfUploader("http://comfy.moe/upload.php"),
             new PomfUploader("https://cocaine.ninja/upload.php"),
-            new PomfUploader("http://cuntflaps.me/upload.php", "http://a.cuntflaps.me"),
-            new PomfUploader("http://files.plebeianparty.com/upload.php", "http://a.plebeianparty.com"),
+            new PomfUploader("https://cuntflaps.me/upload.php"),
+            new PomfUploader("https://fluntcaps.me/upload.php"),
             new PomfUploader("http://g.zxq.co/upload.php", "http://y.zxq.co"),
             new PomfUploader("http://glop.me/upload.php", "http://gateway.glop.me/ipfs"),
             new PomfUploader("http://kyaa.sg/upload.php", "https://r.kyaa.sg"),
-            new PomfUploader("https://maxfile.ro/static/upload.php", "https://d.maxfile.ro"),
             new PomfUploader("https://mixtape.moe/upload.php"),
-            new PomfUploader("https://nigger.cat/upload.php"),
-            new PomfUploader("https://pomf.cat/upload.php", "http://a.pomf.cat"),
-            new PomfUploader("http://pomf.hummingbird.moe/upload.php", "http://a.pomf.hummingbird.moe"),
+            new PomfUploader("https://pomf.cat/upload.php", "https://a.pomf.cat"),
             new PomfUploader("https://pomf.is/upload.php"),
-            //new PomfUploader("https://pomf.se/upload.php"),
             new PomfUploader("http://reich.io/upload.php"),
+            new PomfUploader("https://steamy.moe/upload.php"),
             new PomfUploader("https://sugoi.vidyagam.es/upload.php"),
-            new PomfUploader("http://up.che.moe/upload.php", "http://cdn.che.moe")
+            new PomfUploader("http://up.che.moe/upload.php", "http://cdn.che.moe"),
+            new PomfUploader("https://filebunker.pw/upload.php"),
+            new PomfUploader("https://p.fuwafuwa.moe/upload.php"),
+            new PomfUploader("https://pomf.gocataclysm.com/upload.php")
         };
 
         public PomfUploader Uploader { get; private set; }
@@ -71,12 +90,6 @@ namespace ShareX.UploadersLib.FileUploaders
 
         public override UploadResult Upload(Stream stream, string fileName)
         {
-            if (Uploader == null || string.IsNullOrEmpty(Uploader.UploadURL))
-            {
-                Errors.Add(Resources.Pomf_Upload_Please_select_one_of_the_Pomf_uploaders_from__Destination_settings_window____Pomf_tab__);
-                return null;
-            }
-
             UploadResult result = UploadData(stream, Uploader.UploadURL, fileName, "files[]");
 
             if (result.IsSuccess)
@@ -99,7 +112,7 @@ namespace ShareX.UploadersLib.FileUploaders
             return result;
         }
 
-        public static string TestClones()
+        public static string TestUploaders()
         {
             List<PomfTest> successful = new List<PomfTest>();
             List<PomfTest> failed = new List<PomfTest>();

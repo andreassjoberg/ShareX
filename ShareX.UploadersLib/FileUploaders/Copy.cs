@@ -27,7 +27,6 @@
 
 using Newtonsoft.Json;
 using ShareX.HelpersLib;
-using ShareX.UploadersLib.HelperClasses;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -61,8 +60,7 @@ namespace ShareX.UploadersLib.FileUploaders
             AuthInfo = oauth;
         }
 
-        public Copy(OAuthInfo oauth, CopyAccountInfo accountInfo)
-            : this(oauth)
+        public Copy(OAuthInfo oauth, CopyAccountInfo accountInfo) : this(oauth)
         {
             AccountInfo = accountInfo;
         }
@@ -232,7 +230,7 @@ namespace ShareX.UploadersLib.FileUploaders
                 return GetLinkURL(link, path, urlType);
             }
 
-            return string.Empty;
+            return "";
         }
 
         public string GetPublicURL(string path, CopyURLType urlType = CopyURLType.Default)
@@ -248,7 +246,7 @@ namespace ShareX.UploadersLib.FileUploaders
                 }
             }
 
-            return string.Empty;
+            return "";
         }
 
         public static string TidyUploadPath(string uploadPath)
@@ -258,7 +256,7 @@ namespace ShareX.UploadersLib.FileUploaders
                 return uploadPath.Trim().Replace('\\', '/').Trim('/') + "/";
             }
 
-            return string.Empty;
+            return "";
         }
     }
 

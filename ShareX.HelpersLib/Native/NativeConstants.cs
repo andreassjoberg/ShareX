@@ -25,7 +25,7 @@
 
 namespace ShareX.HelpersLib
 {
-    public static partial class NativeMethods
+    public static class NativeConstants
     {
         public const int GCL_HICONSM = -34;
         public const int GCL_HICON = -14;
@@ -82,5 +82,10 @@ namespace ShareX.HelpersLib
 
         public const uint ECM_FIRST = 0x1500;
         public const uint EM_SETCUEBANNER = ECM_FIRST + 1;
+        public const uint MA_ACTIVATE = 1;
+        public const uint MA_ACTIVATEANDEAT = 2;
+        public const uint MA_NOACTIVATE = 3;
+        public const uint MA_NOACTIVATEANDEAT = 4;
+        public const uint MOUSE_MOVE = 0xF012;
     }
 }

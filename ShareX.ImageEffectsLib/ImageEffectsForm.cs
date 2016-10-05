@@ -34,7 +34,7 @@ using System.Windows.Forms;
 
 namespace ShareX.ImageEffectsLib
 {
-    public partial class ImageEffectsForm : BaseForm
+    public partial class ImageEffectsForm : Form
     {
         public Image DefaultImage { get; private set; }
 
@@ -43,6 +43,7 @@ namespace ShareX.ImageEffectsLib
         public ImageEffectsForm(Image img, List<ImageEffect> effects = null)
         {
             InitializeComponent();
+            Icon = ShareXResources.Icon;
             DefaultImage = img;
             eiImageEffects.ObjectType = typeof(List<ImageEffect>);
             AddAllEffectsToContextMenu();
@@ -60,6 +61,7 @@ namespace ShareX.ImageEffectsLib
             pbResult.AllowDrop = true;
             mbLoadImage.Visible = true;
             btnSaveImage.Visible = true;
+            btnOK.Visible = false;
         }
 
         private void AddAllEffectsToContextMenu()
@@ -135,9 +137,18 @@ namespace ShareX.ImageEffectsLib
 
                 using (Image preview = ApplyEffects())
                 {
-                    pbResult.LoadImage(preview);
-                    Text = string.Format("ShareX - " + Resources.ImageEffectsForm_UpdatePreview_Image_effects___Width___0___Height___1___Render_time___2__ms,
-                        preview.Width, preview.Height, timer.ElapsedMilliseconds);
+                    if (preview != null)
+                    {
+                        pbResult.LoadImage(preview);
+                        Text = string.Format("ShareX - " + Resources.ImageEffectsForm_UpdatePreview_Image_effects___Width___0___Height___1___Render_time___2__ms,
+                            preview.Width, preview.Height, timer.ElapsedMilliseconds);
+                    }
+                    else
+                    {
+                        pbResult.Reset();
+                        Text = string.Format("ShareX - " + Resources.ImageEffectsForm_UpdatePreview_Image_effects___Width___0___Height___1___Render_time___2__ms,
+                            0, 0, timer.ElapsedMilliseconds);
+                    }
                 }
             }
         }
@@ -352,7 +363,10 @@ namespace ShareX.ImageEffectsLib
             {
                 using (Image img = ApplyEffects())
                 {
-                    ImageHelpers.SaveImageFileDialog(img);
+                    if (img != null)
+                    {
+                        ImageHelpers.SaveImageFileDialog(img);
+                    }
                 }
             }
         }
@@ -401,6 +415,7 @@ namespace ShareX.ImageEffectsLib
         private void btnOK_Click(object sender, EventArgs e)
         {
             Effects = GetImageEffects();
+
             DialogResult = DialogResult.OK;
             Close();
         }

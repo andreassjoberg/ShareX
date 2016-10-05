@@ -30,6 +30,18 @@ using System.IO;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class VideoBinFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.VideoBin;
+
+        public override bool CheckConfig(UploadersConfig config) => true;
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new VideoBin();
+        }
+    }
+
     public sealed class VideoBin : FileUploader
     {
         private const string URLUpload = "https://videobin.org/add";

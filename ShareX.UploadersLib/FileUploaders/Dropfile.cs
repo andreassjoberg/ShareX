@@ -28,11 +28,23 @@ using System.IO;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class DropfileFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.Dropfile;
+
+        public override bool CheckConfig(UploadersConfig config) => true;
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new Dropfile();
+        }
+    }
+
     public sealed class Dropfile : FileUploader
     {
         public override UploadResult Upload(Stream stream, string fileName)
         {
-            UploadResult result = UploadData(stream, "https://dropfile.to/upload", fileName);
+            UploadResult result = UploadData(stream, "https://d1.dropfile.to/upload", fileName);
 
             if (result.IsSuccess)
             {

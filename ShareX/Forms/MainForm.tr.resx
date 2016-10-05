@@ -150,17 +150,8 @@
   <data name="tsmiRectangle.Text" xml:space="preserve">
     <value>Bölge</value>
   </data>
-  <data name="tsmiRectangleAnnotate.Text" xml:space="preserve">
-    <value>Bölge (Dipnot)</value>
-  </data>
   <data name="tsmiRectangleLight.Text" xml:space="preserve">
     <value>Bölge (Basit)</value>
-  </data>
-  <data name="tsmiPolygon.Text" xml:space="preserve">
-    <value>Çokgen</value>
-  </data>
-  <data name="tsmiFreeHand.Text" xml:space="preserve">
-    <value>Serbest seçim</value>
   </data>
   <data name="tsmiLastRegion.Text" xml:space="preserve">
     <value>Son bölge</value>
@@ -441,17 +432,8 @@
   <data name="tsmiTrayRectangle.Text" xml:space="preserve">
     <value>Bölge</value>
   </data>
-  <data name="tsmiTrayRectangleAnnotate.Text" xml:space="preserve">
-    <value>Bölge (Dipnot)</value>
-  </data>
   <data name="tsmiTrayRectangleLight.Text" xml:space="preserve">
     <value>Bölge (Basit)</value>
-  </data>
-  <data name="tsmiTrayPolygon.Text" xml:space="preserve">
-    <value>Çokgen</value>
-  </data>
-  <data name="tsmiTrayFreeHand.Text" xml:space="preserve">
-    <value>Serbest seçim</value>
   </data>
   <data name="tsmiTrayLastRegion.Text" xml:space="preserve">
     <value>Son bölge</value>
@@ -656,5 +638,14 @@
   </data>
   <data name="tsmiTrayTestURLShortener.Text" xml:space="preserve">
     <value>URL kısaltma testi</value>
+  </data>
+  <data name="tsmiHideColumns.Text" xml:space="preserve">
+    <value>Kolonları gizle</value>
+  </data>
+  <data name="tsmiTextCapture.Text" xml:space="preserve">
+    <value>Yazı yakalama (OCR)...</value>
+  </data>
+  <data name="tsmiTrayTextCapture.Text" xml:space="preserve">
+    <value>Yazı yakalama (OCR)...</value>
   </data>
 </root>

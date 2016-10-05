@@ -30,11 +30,12 @@ using System.Windows.Forms;
 
 namespace ShareX.HelpersLib
 {
-    public partial class MonitorTestForm : BaseForm
+    public partial class MonitorTestForm : Form
     {
         public MonitorTestForm()
         {
             InitializeComponent();
+            Icon = ShareXResources.Icon;
 
             Rectangle screenBounds = CaptureHelpers.GetScreenBounds();
             Location = screenBounds.Location;
@@ -48,7 +49,7 @@ namespace ShareX.HelpersLib
             btnGradientColor1.Color = Color.DarkGray;
             btnGradientColor2.Color = Color.Black;
             cbShapes.SelectedIndex = 0;
-            tbShapeSize.Value = 3;
+            tbShapeSize.Value = 5;
         }
 
         private void SetBackColor()
@@ -172,13 +173,13 @@ namespace ShareX.HelpersLib
                 switch (cbShapes.SelectedIndex)
                 {
                     case 0:
-                        BackgroundImage = DrawChecker(shapeSize, Color.Black);
-                        break;
-                    case 1:
                         BackgroundImage = DrawHorizontalLine(shapeSize, Color.Black);
                         break;
-                    case 2:
+                    case 1:
                         BackgroundImage = DrawVerticalLine(shapeSize, Color.Black);
+                        break;
+                    case 2:
+                        BackgroundImage = DrawChecker(shapeSize, Color.Black);
                         break;
                 }
             }
@@ -279,6 +280,14 @@ namespace ShareX.HelpersLib
         {
             lblShapeSizeValue.Text = tbShapeSize.Value.ToString();
             DrawSelectedShape();
+        }
+
+        private void btnScreenTearingTest_Click(object sender, EventArgs e)
+        {
+            using (ScreenTearingTestForm screenTearingTestForm = new ScreenTearingTestForm())
+            {
+                screenTearingTestForm.ShowDialog();
+            }
         }
 
         #endregion Form events

@@ -122,15 +122,15 @@ namespace ShareX.HelpersLib
         {
             IntPtr iconHandle;
 
-            SendMessageTimeout(handle, (int)WindowsMessages.GETICON, ICON_SMALL2, 0, SendMessageTimeoutFlags.SMTO_ABORTIFHUNG, 1000, out iconHandle);
+            SendMessageTimeout(handle, (int)WindowsMessages.GETICON, NativeConstants.ICON_SMALL2, 0, SendMessageTimeoutFlags.SMTO_ABORTIFHUNG, 1000, out iconHandle);
 
             if (iconHandle == IntPtr.Zero)
             {
-                SendMessageTimeout(handle, (int)WindowsMessages.GETICON, ICON_SMALL, 0, SendMessageTimeoutFlags.SMTO_ABORTIFHUNG, 1000, out iconHandle);
+                SendMessageTimeout(handle, (int)WindowsMessages.GETICON, NativeConstants.ICON_SMALL, 0, SendMessageTimeoutFlags.SMTO_ABORTIFHUNG, 1000, out iconHandle);
 
                 if (iconHandle == IntPtr.Zero)
                 {
-                    iconHandle = GetClassLongPtrSafe(handle, GCL_HICONSM);
+                    iconHandle = GetClassLongPtrSafe(handle, NativeConstants.GCL_HICONSM);
 
                     if (iconHandle == IntPtr.Zero)
                     {
@@ -151,11 +151,11 @@ namespace ShareX.HelpersLib
         {
             IntPtr iconHandle;
 
-            SendMessageTimeout(handle, (int)WindowsMessages.GETICON, ICON_BIG, 0, SendMessageTimeoutFlags.SMTO_ABORTIFHUNG, 1000, out iconHandle);
+            SendMessageTimeout(handle, (int)WindowsMessages.GETICON, NativeConstants.ICON_BIG, 0, SendMessageTimeoutFlags.SMTO_ABORTIFHUNG, 1000, out iconHandle);
 
             if (iconHandle == IntPtr.Zero)
             {
-                iconHandle = GetClassLongPtrSafe(handle, GCL_HICON);
+                iconHandle = GetClassLongPtrSafe(handle, NativeConstants.GCL_HICON);
             }
 
             if (iconHandle != IntPtr.Zero)
@@ -465,22 +465,30 @@ namespace ShareX.HelpersLib
             return retVal;
         }
 
-        /// <summary>
-        /// Flashes a window until the window comes to the foreground
-        /// Receives the form that will flash
-        /// </summary>
-        /// <param name="hWnd">The handle to the window to flash</param>
-        /// <returns>whether or not the window needed flashing</returns>
-        public static bool FlashWindowEx(Form frm)
+        public static bool FlashWindowEx(Form frm, uint flashCount = uint.MaxValue)
         {
             FLASHWINFO fInfo = new FLASHWINFO();
             fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
             fInfo.hwnd = frm.Handle;
             fInfo.dwFlags = (uint)FlashWindow.FLASHW_ALL | (uint)FlashWindow.FLASHW_TIMERNOFG;
-            fInfo.uCount = uint.MaxValue;
+            fInfo.uCount = flashCount;
             fInfo.dwTimeout = 0;
 
             return FlashWindowEx(ref fInfo);
+        }
+
+        public static void OpenFolderAndSelectFile(string filePath)
+        {
+            IntPtr pidl = ILCreateFromPathW(filePath);
+
+            try
+            {
+                SHOpenFolderAndSelectItems(pidl, 0, IntPtr.Zero, 0);
+            }
+            finally
+            {
+                ILFree(pidl);
+            }
         }
     }
 }

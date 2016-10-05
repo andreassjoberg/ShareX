@@ -25,11 +25,33 @@
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.ImageUploaders
 {
+    public class ImageShackImageUploaderService : ImageUploaderService
+    {
+        public override ImageDestination EnumValue { get; } = ImageDestination.ImageShack;
+
+        public override Icon ServiceIcon => Resources.ImageShack;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return config.ImageShackSettings != null && !string.IsNullOrEmpty(config.ImageShackSettings.Auth_token);
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new ImageShackUploader(APIKeys.ImageShackKey, config.ImageShackSettings);
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpImageShack;
+    }
+
     public sealed class ImageShackUploader : ImageUploader
     {
         private const string URLAPI = "https://api.imageshack.com/v2/";
@@ -217,7 +239,7 @@ namespace ShareX.UploadersLib.ImageUploaders
         public string Password { get; set; }
         public bool IsPublic { get; set; }
         public string Auth_token { get; set; }
-        public int ThumbnailWidth { get; set; }
+        public int ThumbnailWidth { get; set; } = 256;
         public int ThumbnailHeight { get; set; }
     }
 }

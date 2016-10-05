@@ -24,17 +24,56 @@
 #endregion License Information (GPL v3)
 
 using Newtonsoft.Json;
-using ShareX.UploadersLib.HelperClasses;
+using ShareX.UploadersLib.Properties;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Drawing;
 using System.IO;
+using System.Web;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class GoogleDriveFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.GoogleDrive;
+
+        public override Icon ServiceIcon => Resources.GoogleDrive;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return OAuth2Info.CheckOAuth(config.GoogleDriveOAuth2Info);
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new GoogleDrive(config.GoogleDriveOAuth2Info)
+            {
+                IsPublic = config.GoogleDriveIsPublic,
+                DirectLink = config.GoogleDriveDirectLink,
+                FolderID = config.GoogleDriveUseFolder ? config.GoogleDriveFolderID : null
+            };
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpGoogleDrive;
+    }
+
+    public enum GoogleDrivePermissionRole
+    {
+        owner, reader, writer
+    }
+
+    public enum GoogleDrivePermissionType
+    {
+        user, group, domain, anyone
+    }
+
     public sealed class GoogleDrive : FileUploader, IOAuth2
     {
         public OAuth2Info AuthInfo { get; set; }
         public bool IsPublic { get; set; }
+        public bool DirectLink { get; set; }
         public string FolderID { get; set; }
 
         public GoogleDrive(OAuth2Info oauth)
@@ -222,7 +261,7 @@ namespace ShareX.UploadersLib.FileUploaders
             string metadata = GetMetadata(fileName, FolderID);
 
             UploadResult result = UploadData(stream, "https://www.googleapis.com/upload/drive/v2/files?uploadType=multipart", fileName, headers: GetAuthHeaders(),
-                requestContentType: "multipart/related", metadata: metadata);
+                contentType: "multipart/related", metadata: metadata);
 
             if (!string.IsNullOrEmpty(result.Response))
             {
@@ -237,34 +276,39 @@ namespace ShareX.UploadersLib.FileUploaders
                         SetPermissions(upload.id, GoogleDrivePermissionRole.reader, GoogleDrivePermissionType.anyone, "", true);
                     }
 
-                    result.URL = upload.alternateLink;
+                    if (DirectLink)
+                    {
+                        Uri webContentLink = new Uri(upload.webContentLink);
+
+                        string leftPart = webContentLink.GetLeftPart(UriPartial.Path);
+
+                        NameValueCollection queryString = HttpUtility.ParseQueryString(webContentLink.Query);
+                        queryString.Remove("export");
+
+                        result.URL = $"{leftPart}?{queryString}";
+                    }
+                    else
+                    {
+                        result.URL = upload.alternateLink;
+                    }
                 }
             }
 
             return result;
         }
+    }
 
-        public class GoogleDriveFile
-        {
-            public string id { get; set; }
-            public string alternateLink { get; set; }
-            public string title { get; set; }
-            public string description { get; set; }
-        }
+    public class GoogleDriveFile
+    {
+        public string id { get; set; }
+        public string alternateLink { get; set; }
+        public string webContentLink { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+    }
 
-        public class GoogleDriveFileList
-        {
-            public List<GoogleDriveFile> items { get; set; }
-        }
-
-        public enum GoogleDrivePermissionRole
-        {
-            owner, reader, writer
-        }
-
-        public enum GoogleDrivePermissionType
-        {
-            user, group, domain, anyone
-        }
+    public class GoogleDriveFileList
+    {
+        public List<GoogleDriveFile> items { get; set; }
     }
 }

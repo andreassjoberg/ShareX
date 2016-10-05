@@ -27,16 +27,42 @@
 
 using Newtonsoft.Json;
 using ShareX.HelpersLib;
+using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class MediaFireFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.MediaFire;
+
+        public override Icon ServiceIcon => Resources.MediaFire;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return !string.IsNullOrEmpty(config.MediaFireUsername) && !string.IsNullOrEmpty(config.MediaFirePassword);
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new MediaFire(APIKeys.MediaFireAppId, APIKeys.MediaFireApiKey, config.MediaFireUsername, config.MediaFirePassword)
+            {
+                UploadPath = NameParser.Parse(NameParserType.URL, config.MediaFirePath),
+                UseLongLink = config.MediaFireUseLongLink
+            };
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpMediaFire;
+    }
+
     public sealed class MediaFire : FileUploader
     {
         private static readonly string _apiUrl = "https://www.mediafire.com/api/";
@@ -70,7 +96,7 @@ namespace ShareX.UploadersLib.FileUploaders
 
         private void GetSessionToken()
         {
-            var args = new Dictionary<string, string>();
+            Dictionary<string, string> args = new Dictionary<string, string>();
             args.Add("email", _user);
             args.Add("password", _pasw);
             args.Add("application_id", _appId);
@@ -89,7 +115,7 @@ namespace ShareX.UploadersLib.FileUploaders
 
         private string SimpleUpload(Stream stream, string fileName)
         {
-            var args = new Dictionary<string, string>();
+            Dictionary<string, string> args = new Dictionary<string, string>();
             args.Add("session_token", _sessionToken);
             args.Add("path", UploadPath);
             args.Add("response_format", "json");
@@ -105,7 +131,7 @@ namespace ShareX.UploadersLib.FileUploaders
 
         private string PollUpload(string uploadKey, string fileName)
         {
-            var args = new Dictionary<string, string>();
+            Dictionary<string, string> args = new Dictionary<string, string>();
             args.Add("session_token", _sessionToken);
             args.Add("key", uploadKey);
             args.Add("filename", fileName);

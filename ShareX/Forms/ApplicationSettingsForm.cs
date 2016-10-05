@@ -25,7 +25,6 @@
 
 using ShareX.HelpersLib;
 using ShareX.Properties;
-using ShareX.ScreenCaptureLib;
 using ShareX.UploadersLib;
 using System;
 using System.Drawing;
@@ -34,21 +33,44 @@ using System.Windows.Forms;
 
 namespace ShareX
 {
-    public partial class ApplicationSettingsForm : BaseForm
+    public partial class ApplicationSettingsForm : Form
     {
-        private bool loaded;
         private const int MaxBufferSizePower = 14;
+
+        private bool ready;
+        private string lastPersonalPath;
 
         public ApplicationSettingsForm()
         {
-            InitializeComponent();
-            LoadSettings();
-            loaded = true;
+            InitializeControls();
+            Icon = ShareXResources.Icon;
         }
 
-        private void LoadSettings()
+        private void SettingsForm_Shown(object sender, EventArgs e)
         {
-            // General
+            this.ForceActivate();
+        }
+
+        private void SettingsForm_Resize(object sender, EventArgs e)
+        {
+            Refresh();
+        }
+
+        private void SettingsForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            string currentPersonalPath = txtPersonalFolderPath.Text;
+
+            if (!currentPersonalPath.Equals(lastPersonalPath, StringComparison.InvariantCultureIgnoreCase))
+            {
+                Program.WritePersonalPathConfig(currentPersonalPath);
+
+                MessageBox.Show("You must reopen ShareX for personal folder changes to take effect.", "ShareX", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void InitializeControls()
+        {
+            InitializeComponent();
 
             foreach (SupportedLanguage language in Helpers.GetEnums<SupportedLanguage>())
             {
@@ -60,6 +82,22 @@ namespace ShareX
                 cmsLanguages.Items.Add(tsmi);
             }
 
+            cbTrayLeftDoubleClickAction.Items.AddRange(Helpers.GetLocalizedEnumDescriptions<HotkeyType>());
+            cbTrayLeftClickAction.Items.AddRange(Helpers.GetLocalizedEnumDescriptions<HotkeyType>());
+            cbTrayMiddleClickAction.Items.AddRange(Helpers.GetLocalizedEnumDescriptions<HotkeyType>());
+
+            CodeMenu.Create<CodeMenuEntryFilename>(txtSaveImageSubFolderPattern, CodeMenuEntryFilename.t, CodeMenuEntryFilename.pn, CodeMenuEntryFilename.i, CodeMenuEntryFilename.width, CodeMenuEntryFilename.height, CodeMenuEntryFilename.n);
+
+            cbProxyMethod.Items.AddRange(Helpers.GetLocalizedEnumDescriptions<ProxyMethod>());
+
+            UpdateControls();
+        }
+
+        private void UpdateControls()
+        {
+            ready = false;
+
+            // General
             ChangeLanguage(Program.Settings.Language);
 
             cbShowTray.Checked = Program.Settings.ShowTray;
@@ -70,6 +108,16 @@ namespace ShareX
             cbTaskbarProgressEnabled.Checked = Program.Settings.TaskbarProgressEnabled;
             cbRememberMainFormPosition.Checked = Program.Settings.RememberMainFormPosition;
             cbRememberMainFormSize.Checked = Program.Settings.RememberMainFormSize;
+
+            cbTrayLeftDoubleClickAction.SelectedIndex = (int)Program.Settings.TrayLeftDoubleClickAction;
+            cbTrayLeftClickAction.SelectedIndex = (int)Program.Settings.TrayLeftClickAction;
+            cbTrayMiddleClickAction.SelectedIndex = (int)Program.Settings.TrayMiddleClickAction;
+
+#if STEAM
+            cbCheckPreReleaseUpdates.Visible = false;
+#else
+            cbCheckPreReleaseUpdates.Checked = Program.Settings.CheckPreReleaseUpdates;
+#endif
 
             // Integration
             cbStartWithWindows.Checked = IntegrationHelpers.CheckStartupShortcut();
@@ -83,26 +131,31 @@ namespace ShareX
 #endif
 
             // Paths
-            txtPersonalFolderPath.Text = Program.ReadPersonalPathConfig();
+            lastPersonalPath = Program.ReadPersonalPathConfig();
+            txtPersonalFolderPath.Text = lastPersonalPath;
             UpdatePersonalFolderPathPreview();
             cbUseCustomScreenshotsPath.Checked = Program.Settings.UseCustomScreenshotsPath;
             txtCustomScreenshotsPath.Text = Program.Settings.CustomScreenshotsPath;
             txtSaveImageSubFolderPattern.Text = Program.Settings.SaveImageSubFolderPattern;
-            CodeMenu.Create<ReplCodeMenuEntry>(txtSaveImageSubFolderPattern, ReplCodeMenuEntry.t, ReplCodeMenuEntry.pn, ReplCodeMenuEntry.i,
-                ReplCodeMenuEntry.width, ReplCodeMenuEntry.height, ReplCodeMenuEntry.n);
+
+            // Export / Import
+            cbExportSettings.Checked = Program.Settings.ExportSettings;
+            cbExportHistory.Checked = Program.Settings.ExportHistory;
+            cbExportLogs.Checked = Program.Settings.ExportLogs;
+            UpdateExportButton();
 
             // Proxy
-            cbProxyMethod.Items.AddRange(Helpers.GetLocalizedEnumDescriptions<ProxyMethod>());
             cbProxyMethod.SelectedIndex = (int)Program.Settings.ProxySettings.ProxyMethod;
             txtProxyUsername.Text = Program.Settings.ProxySettings.Username;
             txtProxyPassword.Text = Program.Settings.ProxySettings.Password;
-            txtProxyHost.Text = Program.Settings.ProxySettings.Host ?? string.Empty;
-            nudProxyPort.Value = Program.Settings.ProxySettings.Port;
+            txtProxyHost.Text = Program.Settings.ProxySettings.Host ?? "";
+            nudProxyPort.SetValue(Program.Settings.ProxySettings.Port);
             UpdateProxyControls();
 
             // Upload
-            nudUploadLimit.Value = Program.Settings.UploadLimit;
+            nudUploadLimit.SetValue(Program.Settings.UploadLimit);
 
+            cbBufferSize.Items.Clear();
             for (int i = 0; i < MaxBufferSizePower; i++)
             {
                 string size = ((long)(Math.Pow(2, i) * 1024)).ToSizeString(Program.Settings.BinaryUnits, 0);
@@ -111,12 +164,13 @@ namespace ShareX
 
             cbBufferSize.SelectedIndex = Program.Settings.BufferSizePower.Between(0, MaxBufferSizePower);
 
+            lvClipboardFormats.Items.Clear();
             foreach (ClipboardFormat cf in Program.Settings.ClipboardContentFormats)
             {
                 AddClipboardFormat(cf);
             }
 
-            nudRetryUpload.Value = Program.Settings.MaxUploadFailRetry;
+            nudRetryUpload.SetValue(Program.Settings.MaxUploadFailRetry);
             chkUseSecondaryUploaders.Checked = Program.Settings.UseSecondaryUploaders;
             tlpBackupDestinations.Enabled = Program.Settings.UseSecondaryUploaders;
 
@@ -128,9 +182,22 @@ namespace ShareX
             Program.Settings.SecondaryTextUploaders.Where(n => Helpers.GetEnums<TextDestination>().All(e => e != n)).ForEach(x => Program.Settings.SecondaryTextUploaders.Remove(x));
             Program.Settings.SecondaryFileUploaders.Where(n => Helpers.GetEnums<FileDestination>().All(e => e != n)).ForEach(x => Program.Settings.SecondaryFileUploaders.Remove(x));
 
+            lvSecondaryImageUploaders.Items.Clear();
             Program.Settings.SecondaryImageUploaders.ForEach<ImageDestination>(x => lvSecondaryImageUploaders.Items.Add(new ListViewItem(x.GetLocalizedDescription()) { Tag = x }));
+            lvSecondaryTextUploaders.Items.Clear();
             Program.Settings.SecondaryTextUploaders.ForEach<TextDestination>(x => lvSecondaryTextUploaders.Items.Add(new ListViewItem(x.GetLocalizedDescription()) { Tag = x }));
+            lvSecondaryFileUploaders.Items.Clear();
             Program.Settings.SecondaryFileUploaders.ForEach<FileDestination>(x => lvSecondaryFileUploaders.Items.Add(new ListViewItem(x.GetLocalizedDescription()) { Tag = x }));
+
+            // History
+            cbHistorySaveTasks.Checked = Program.Settings.HistorySaveTasks;
+            cbHistoryCheckURL.Checked = Program.Settings.HistoryCheckURL;
+
+            cbRecentTasksSave.Checked = Program.Settings.RecentTasksSave;
+            nudRecentTasksMaxCount.SetValue(Program.Settings.RecentTasksMaxCount);
+            cbRecentTasksShowInMainWindow.Checked = Program.Settings.RecentTasksShowInMainWindow;
+            cbRecentTasksShowInTrayMenu.Checked = Program.Settings.RecentTasksShowInTrayMenu;
+            cbRecentTasksTrayMenuMostRecentFirst.Checked = Program.Settings.RecentTasksTrayMenuMostRecentFirst;
 
             // Print
             cbDontShowPrintSettingDialog.Checked = Program.Settings.DontShowPrintSettingsDialog;
@@ -140,6 +207,8 @@ namespace ShareX
             pgSettings.SelectedObject = Program.Settings;
 
             tttvMain.MainTabControl = tcSettings;
+
+            ready = true;
         }
 
         private Image GetLanguageIcon(SupportedLanguage language)
@@ -198,7 +267,7 @@ namespace ShareX
             btnLanguages.Text = language.GetLocalizedDescription();
             btnLanguages.Image = GetLanguageIcon(language);
 
-            if (loaded)
+            if (ready)
             {
                 Program.Settings.Language = language;
 
@@ -209,21 +278,6 @@ namespace ShareX
                     Program.Restart();
                 }
             }
-        }
-
-        private void SettingsForm_Shown(object sender, EventArgs e)
-        {
-            this.ShowActivate();
-        }
-
-        private void SettingsForm_Resize(object sender, EventArgs e)
-        {
-            Refresh();
-        }
-
-        private void SettingsForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Program.WritePersonalPathConfig(txtPersonalFolderPath.Text);
         }
 
         private void UpdateProxyControls()
@@ -249,29 +303,40 @@ namespace ShareX
 
             if (string.IsNullOrEmpty(personalPath))
             {
-                personalPath = Program.DefaultPersonalFolder;
+                if (Program.PortableApps)
+                {
+                    personalPath = Program.PortableAppsPersonalFolder;
+                }
+                else if (Program.Portable)
+                {
+                    personalPath = Program.PortablePersonalFolder;
+                }
+                else
+                {
+                    personalPath = Program.DefaultPersonalFolder;
+                }
             }
             else
             {
-                personalPath = Environment.ExpandEnvironmentVariables(personalPath);
+                personalPath = Helpers.ExpandFolderVariables(personalPath);
                 personalPath = Helpers.GetAbsolutePath(personalPath);
             }
 
             lblPreviewPersonalFolderPath.Text = personalPath;
         }
 
-        #region General
-
-        private void llTranslators_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void UpdateExportButton()
         {
-            URLHelpers.OpenURL("https://github.com/ShareX/ShareX/wiki/Translation");
+            btnExport.Enabled = Program.Settings.ExportSettings || Program.Settings.ExportHistory || Program.Settings.ExportLogs;
         }
+
+        #region General
 
         private void cbShowTray_CheckedChanged(object sender, EventArgs e)
         {
             Program.Settings.ShowTray = cbShowTray.Checked;
 
-            if (loaded)
+            if (ready)
             {
                 Program.MainForm.niTray.Visible = Program.Settings.ShowTray;
             }
@@ -293,7 +358,7 @@ namespace ShareX
         {
             Program.Settings.TaskbarProgressEnabled = cbTaskbarProgressEnabled.Checked;
 
-            if (loaded)
+            if (ready)
             {
                 TaskbarManager.Enabled = Program.Settings.TaskbarProgressEnabled;
             }
@@ -309,13 +374,38 @@ namespace ShareX
             Program.Settings.RememberMainFormSize = cbRememberMainFormSize.Checked;
         }
 
+        private void cbTrayLeftDoubleClickAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Program.Settings.TrayLeftDoubleClickAction = (HotkeyType)cbTrayLeftDoubleClickAction.SelectedIndex;
+        }
+
+        private void cbTrayLeftClickAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Program.Settings.TrayLeftClickAction = (HotkeyType)cbTrayLeftClickAction.SelectedIndex;
+        }
+
+        private void cbTrayMiddleClickAction_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Program.Settings.TrayMiddleClickAction = (HotkeyType)cbTrayMiddleClickAction.SelectedIndex;
+        }
+
+        private void btnEditQuickTaskMenu_Click(object sender, EventArgs e)
+        {
+            new QuickTaskMenuEditorForm().ShowDialog();
+        }
+
+        private void cbCheckPreReleaseUpdates_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.Settings.CheckPreReleaseUpdates = cbCheckPreReleaseUpdates.Checked;
+        }
+
         #endregion General
 
         #region Integration
 
         private void cbStartWithWindows_CheckedChanged(object sender, EventArgs e)
         {
-            if (loaded)
+            if (ready)
             {
                 IntegrationHelpers.CreateStartupShortcut(cbStartWithWindows.Checked);
             }
@@ -323,7 +413,7 @@ namespace ShareX
 
         private void cbShellContextMenu_CheckedChanged(object sender, EventArgs e)
         {
-            if (loaded)
+            if (ready)
             {
                 IntegrationHelpers.CreateShellContextMenuButton(cbShellContextMenu.Checked);
             }
@@ -331,7 +421,7 @@ namespace ShareX
 
         private void cbSendToMenu_CheckedChanged(object sender, EventArgs e)
         {
-            if (loaded)
+            if (ready)
             {
                 IntegrationHelpers.CreateSendToMenuButton(cbSendToMenu.Checked);
             }
@@ -344,7 +434,7 @@ namespace ShareX
 
         private void cbSteamShowInApp_CheckedChanged(object sender, EventArgs e)
         {
-            if (loaded)
+            if (ready)
             {
                 IntegrationHelpers.SteamShowInApp(cbSteamShowInApp.Checked);
             }
@@ -361,7 +451,7 @@ namespace ShareX
 
         private void btnBrowsePersonalFolderPath_Click(object sender, EventArgs e)
         {
-            Helpers.BrowseFolder(Resources.ApplicationSettingsForm_btnBrowsePersonalFolderPath_Click_Choose_ShareX_personal_folder_path, txtPersonalFolderPath, Program.PersonalFolder);
+            Helpers.BrowseFolder(Resources.ApplicationSettingsForm_btnBrowsePersonalFolderPath_Click_Choose_ShareX_personal_folder_path, txtPersonalFolderPath, Program.PersonalFolder, true);
         }
 
         private void btnOpenPersonalFolder_Click(object sender, EventArgs e)
@@ -383,7 +473,7 @@ namespace ShareX
 
         private void btnBrowseCustomScreenshotsPath_Click(object sender, EventArgs e)
         {
-            Helpers.BrowseFolder(Resources.ApplicationSettingsForm_btnBrowseCustomScreenshotsPath_Click_Choose_screenshots_folder_path, txtCustomScreenshotsPath, Program.PersonalFolder);
+            Helpers.BrowseFolder(Resources.ApplicationSettingsForm_btnBrowseCustomScreenshotsPath_Click_Choose_screenshots_folder_path, txtCustomScreenshotsPath, Program.PersonalFolder, true);
         }
 
         private void txtSaveImageSubFolderPattern_TextChanged(object sender, EventArgs e)
@@ -399,6 +489,110 @@ namespace ShareX
 
         #endregion Paths
 
+        #region Export / Import
+
+        private void cbExportSettings_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.Settings.ExportSettings = cbExportSettings.Checked;
+            UpdateExportButton();
+        }
+
+        private void cbExportHistory_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.Settings.ExportHistory = cbExportHistory.Checked;
+            UpdateExportButton();
+        }
+
+        private void cbExportLogs_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.Settings.ExportLogs = cbExportLogs.Checked;
+            UpdateExportButton();
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.DefaultExt = "sxb";
+                sfd.FileName = $"ShareX-{Application.ProductVersion}-backup.sxb";
+                sfd.Filter = "ShareX backup (*.sxb)|*.sxb|All files (*.*)|*.*";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    btnExport.Enabled = false;
+                    btnImport.Enabled = false;
+                    pbExportImport.Visible = true;
+
+                    string exportPath = sfd.FileName;
+
+                    DebugHelper.WriteLine("Export started: " + exportPath);
+
+                    TaskEx.Run(() =>
+                    {
+                        Program.SaveAllSettings();
+
+                        ExportImportManager.Export(exportPath);
+                    },
+                    () =>
+                    {
+                        if (!IsDisposed)
+                        {
+                            pbExportImport.Visible = false;
+                            btnExport.Enabled = true;
+                            btnImport.Enabled = true;
+                        }
+
+                        DebugHelper.WriteLine("Export completed: " + exportPath);
+                    });
+                }
+            }
+        }
+
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "ShareX backup (*.sxb)|*.sxb|All files (*.*)|*.*";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    btnExport.Enabled = false;
+                    btnImport.Enabled = false;
+                    pbExportImport.Visible = true;
+
+                    string importPath = ofd.FileName;
+
+                    DebugHelper.WriteLine("Import started: " + importPath);
+
+                    TaskEx.Run(() =>
+                    {
+                        ExportImportManager.Import(importPath);
+
+                        Program.LoadAllSettings();
+                    },
+                    () =>
+                    {
+                        if (!IsDisposed)
+                        {
+                            UpdateControls();
+
+                            pbExportImport.Visible = false;
+                            btnExport.Enabled = true;
+                            btnImport.Enabled = true;
+                        }
+
+                        LanguageHelper.ChangeLanguage(Program.Settings.Language);
+
+                        Program.MainForm.UpdateControls();
+
+                        DebugHelper.WriteLine("Import completed: " + importPath);
+                    });
+                }
+            }
+        }
+
+        #endregion Export / Import
+
         #region Proxy
 
         private void cbProxyMethod_SelectedIndexChanged(object sender, EventArgs e)
@@ -408,8 +602,8 @@ namespace ShareX
             if (Program.Settings.ProxySettings.ProxyMethod == ProxyMethod.Automatic)
             {
                 Program.Settings.ProxySettings.IsValidProxy();
-                txtProxyHost.Text = Program.Settings.ProxySettings.Host ?? string.Empty;
-                nudProxyPort.Value = Program.Settings.ProxySettings.Port;
+                txtProxyHost.Text = Program.Settings.ProxySettings.Host ?? "";
+                nudProxyPort.SetValue(Program.Settings.ProxySettings.Port);
             }
 
             UpdateProxyControls();
@@ -532,6 +726,45 @@ namespace ShareX
 
         #endregion Upload
 
+        #region History
+
+        private void cbHistorySaveTasks_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.Settings.HistorySaveTasks = cbHistorySaveTasks.Checked;
+        }
+
+        private void cbHistoryCheckURL_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.Settings.HistoryCheckURL = cbHistoryCheckURL.Checked;
+        }
+
+        private void cbRecentTasksSave_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.Settings.RecentTasksSave = cbRecentTasksSave.Checked;
+        }
+
+        private void nudRecentTasksMaxCount_ValueChanged(object sender, EventArgs e)
+        {
+            Program.Settings.RecentTasksMaxCount = (int)nudRecentTasksMaxCount.Value;
+        }
+
+        private void cbRecentTasksShowInMainWindow_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.Settings.RecentTasksShowInMainWindow = cbRecentTasksShowInMainWindow.Checked;
+        }
+
+        private void cbRecentTasksShowInTrayMenu_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.Settings.RecentTasksShowInTrayMenu = cbRecentTasksShowInTrayMenu.Checked;
+        }
+
+        private void cbRecentTasksTrayMenuMostRecentFirst_CheckedChanged(object sender, EventArgs e)
+        {
+            Program.Settings.RecentTasksTrayMenuMostRecentFirst = cbRecentTasksTrayMenuMostRecentFirst.Checked;
+        }
+
+        #endregion History
+
         #region Print
 
         private void cbDontShowPrintSettingDialog_CheckedChanged(object sender, EventArgs e)
@@ -541,7 +774,7 @@ namespace ShareX
 
         private void btnShowImagePrintSettings_Click(object sender, EventArgs e)
         {
-            using (Image testImage = Screenshot.CaptureActiveMonitor())
+            using (Image testImage = TaskHelpers.GetScreenshot().CaptureActiveMonitor())
             using (PrintForm printForm = new PrintForm(testImage, Program.Settings.PrintSettings, true))
             {
                 printForm.ShowDialog();

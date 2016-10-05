@@ -25,22 +25,25 @@
 
 using ShareX.HelpersLib;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace ShareX
 {
-    public partial class VideoEncodersForm : BaseForm
+    public partial class VideoEncodersForm : Form
     {
         public VideoEncodersForm()
         {
             InitializeComponent();
+            Icon = ShareXResources.Icon;
+
             Program.Settings.VideoEncoders.ForEach(x => AddVideoEncoder(x));
         }
 
         private void btnEncoderDuplicate_Click(object sender, EventArgs e)
         {
-            var encoders = lvEncoders.SelectedItems.Cast<ListViewItem>().Select(x => ((VideoEncoder)x.Tag).Copy()).ToList();
+            List<VideoEncoder> encoders = lvEncoders.SelectedItems.Cast<ListViewItem>().Select(x => ((VideoEncoder)x.Tag).Copy()).ToList();
             encoders.ForEach(x => AddVideoEncoder(x));
             encoders.ForEach(x => Program.Settings.VideoEncoders.Add(x));
         }

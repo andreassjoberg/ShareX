@@ -23,11 +23,52 @@
 
 #endregion License Information (GPL v3)
 
+using ShareX.HelpersLib;
+using ShareX.UploadersLib.Properties;
 using System;
+using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class CustomFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.CustomFileUploader;
+
+        public override Image ServiceImage => Resources.globe_network;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return config.CustomUploadersList != null && config.CustomUploadersList.IsValidIndex(config.CustomFileUploaderSelected);
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            int index;
+
+            if (taskInfo.OverrideCustomUploader)
+            {
+                index = taskInfo.CustomUploaderIndex.BetweenOrDefault(0, config.CustomUploadersList.Count - 1);
+            }
+            else
+            {
+                index = config.CustomFileUploaderSelected;
+            }
+
+            CustomUploaderItem customUploader = config.CustomUploadersList.ReturnIfValidIndex(index);
+
+            if (customUploader != null)
+            {
+                return new CustomFileUploader(customUploader);
+            }
+
+            return null;
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpCustomUploaders;
+    }
+
     public sealed class CustomFileUploader : FileUploader
     {
         private CustomUploaderItem customUploader;
@@ -49,7 +90,14 @@ namespace ShareX.UploadersLib.FileUploaders
 
             if (result.IsSuccess)
             {
-                customUploader.ParseResponse(result);
+                try
+                {
+                    customUploader.ParseResponse(result);
+                }
+                catch (Exception e)
+                {
+                    Errors.Add(Resources.CustomFileUploader_Upload_Response_parse_failed_ + Environment.NewLine + e);
+                }
             }
 
             return result;

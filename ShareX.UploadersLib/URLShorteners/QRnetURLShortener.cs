@@ -30,6 +30,18 @@ using System.Collections.Generic;
 
 namespace ShareX.UploadersLib.URLShorteners
 {
+    public class QRnetURLShortenerService : URLShortenerService
+    {
+        public override UrlShortenerType EnumValue { get; } = UrlShortenerType.QRnet;
+
+        public override bool CheckConfig(UploadersConfig config) => true;
+
+        public override URLShortener CreateShortener(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new QRnetURLShortener();
+        }
+    }
+
     public sealed class QRnetURLShortener : URLShortener
     {
         private const string API_ENDPOINT = "http://qr.net/api/short";

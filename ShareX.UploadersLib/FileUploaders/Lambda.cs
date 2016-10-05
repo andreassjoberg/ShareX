@@ -26,11 +26,33 @@
 // Credits: https://github.com/mstojcevich
 
 using Newtonsoft.Json;
+using ShareX.UploadersLib.Properties;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Windows.Forms;
 
 namespace ShareX.UploadersLib.FileUploaders
 {
+    public class LambdaFileUploaderService : FileUploaderService
+    {
+        public override FileDestination EnumValue { get; } = FileDestination.Lambda;
+
+        public override Icon ServiceIcon => Resources.Lambda;
+
+        public override bool CheckConfig(UploadersConfig config)
+        {
+            return config.LambdaSettings != null && !string.IsNullOrEmpty(config.LambdaSettings.UserAPIKey);
+        }
+
+        public override GenericUploader CreateUploader(UploadersConfig config, TaskReferenceHelper taskInfo)
+        {
+            return new Lambda(config.LambdaSettings);
+        }
+
+        public override TabPage GetUploadersConfigTabPage(UploadersConfigForm form) => form.tpLambda;
+    }
+
     public sealed class Lambda : FileUploader
     {
         public LambdaSettings Config { get; private set; }
@@ -46,12 +68,6 @@ namespace ShareX.UploadersLib.FileUploaders
 
         public override UploadResult Upload(Stream stream, string fileName)
         {
-            if (string.IsNullOrEmpty(Config.UserAPIKey))
-            {
-                Errors.Add("Missing API key. Set one in destination settings.");
-                return null;
-            }
-
             Dictionary<string, string> arguments = new Dictionary<string, string>();
             arguments.Add("api_key", Config.UserAPIKey);
             UploadResult result = UploadData(stream, uploadUrl, fileName, "file", arguments, method: HttpMethod.PUT);
@@ -92,7 +108,7 @@ namespace ShareX.UploadersLib.FileUploaders
 
     public class LambdaSettings
     {
-        public string UserAPIKey = string.Empty;
+        public string UserAPIKey = "";
         public string UploadURL = "https://λ.pw/";
     }
 }

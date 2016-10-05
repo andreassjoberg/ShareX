@@ -24,6 +24,7 @@
 #endregion License Information (GPL v3)
 
 using ShareX.HelpersLib;
+using ShareX.MediaLib;
 using ShareX.ScreenCaptureLib.Properties;
 using System;
 using System.Diagnostics;
@@ -33,7 +34,7 @@ using System.Windows.Forms;
 
 namespace ShareX.ScreenCaptureLib
 {
-    public partial class FFmpegOptionsForm : BaseForm
+    public partial class FFmpegOptionsForm : Form
     {
         public ScreencastOptions Options { get; private set; }
         public string DefaultToolsPath { get; set; }
@@ -43,6 +44,7 @@ namespace ShareX.ScreenCaptureLib
         public FFmpegOptionsForm(ScreencastOptions options)
         {
             InitializeComponent();
+            Icon = ShareXResources.Icon;
             Options = options;
 
             eiFFmpeg.ObjectType = typeof(FFmpegOptions);
@@ -79,14 +81,14 @@ namespace ShareX.ScreenCaptureLib
             tbUserArgs.Text = Options.FFmpeg.UserArgs;
 
             // x264
-            nudx264CRF.Value = Options.FFmpeg.x264_CRF.Between((int)nudx264CRF.Minimum, (int)nudx264CRF.Maximum);
+            nudx264CRF.SetValue(Options.FFmpeg.x264_CRF);
             cbx264Preset.SelectedIndex = (int)Options.FFmpeg.x264_Preset;
 
             // VPx
-            nudVP8Bitrate.Value = Options.FFmpeg.VPx_bitrate.Between((int)nudVP8Bitrate.Minimum, (int)nudVP8Bitrate.Maximum);
+            nudVP8Bitrate.SetValue(Options.FFmpeg.VPx_bitrate);
 
             // Xvid
-            nudXvidQscale.Value = Options.FFmpeg.XviD_qscale.Between((int)nudXvidQscale.Minimum, (int)nudXvidQscale.Maximum);
+            nudXvidQscale.SetValue(Options.FFmpeg.XviD_qscale);
 
             // GIF
             cbGIFStatsMode.SelectedIndex = (int)Options.FFmpeg.GIFStatsMode;
@@ -185,21 +187,13 @@ namespace ShareX.ScreenCaptureLib
                 {
                     txtCommandLinePreview.Text = Options.GetFFmpegArgs();
                 }
+
+                UpdateFFmpegPathUI();
             }
         }
 
-        private void cbOverrideFFmpegPath_CheckedChanged(object sender, EventArgs e)
+        private void UpdateFFmpegPathUI()
         {
-#if STEAM
-            Options.FFmpeg.OverrideCLIPath = cbOverrideFFmpegPath.Checked;
-            gbFFmpegExe.Enabled = Options.FFmpeg.OverrideCLIPath;
-#endif
-        }
-
-        private void txtFFmpegPath_TextChanged(object sender, EventArgs e)
-        {
-            Options.FFmpeg.CLIPath = txtFFmpegPath.Text;
-
 #if !STEAM
             Color backColor = Color.FromArgb(255, 200, 200);
 
@@ -216,9 +210,23 @@ namespace ShareX.ScreenCaptureLib
 #endif
         }
 
+        private void cbOverrideFFmpegPath_CheckedChanged(object sender, EventArgs e)
+        {
+#if STEAM
+            Options.FFmpeg.OverrideCLIPath = cbOverrideFFmpegPath.Checked;
+            gbFFmpegExe.Enabled = Options.FFmpeg.OverrideCLIPath;
+#endif
+        }
+
+        private void txtFFmpegPath_TextChanged(object sender, EventArgs e)
+        {
+            Options.FFmpeg.CLIPath = txtFFmpegPath.Text;
+            UpdateFFmpegPathUI();
+        }
+
         private void buttonFFmpegBrowse_Click(object sender, EventArgs e)
         {
-            if (Helpers.BrowseFile(Resources.FFmpegOptionsForm_buttonFFmpegBrowse_Click_Browse_for_ffmpeg_exe, txtFFmpegPath, Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles)))
+            if (Helpers.BrowseFile(Resources.FFmpegOptionsForm_buttonFFmpegBrowse_Click_Browse_for_ffmpeg_exe, txtFFmpegPath, Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), true))
             {
                 RefreshSourcesAsync();
             }
@@ -406,7 +414,7 @@ namespace ShareX.ScreenCaptureLib
             {
                 this.InvokeSafe(() =>
                 {
-                    txtFFmpegPath.Text = extractPath;
+                    txtFFmpegPath.Text = Helpers.GetVariableFolderPath(extractPath);
                     RefreshSourcesAsync();
                     UpdateUI();
                 });
